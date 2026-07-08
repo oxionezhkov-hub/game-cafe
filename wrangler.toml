@@ -1,0 +1,7 @@
+name = "game123"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "LAFOURNEE_KV"
+id = "bc70059c9ebe4dec9cebd2cb2e1fd244"
