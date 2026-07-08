@@ -4,28 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>La Fournée — Пекарня-кофейня</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --espresso:#1C0A00;--cream:#F5E6C8;--caramel:#C8873A;--sage:#4A7C59;--latte:#E8C4A0;
-  --latte2:#d4a87a;--shadow:rgba(28,10,0,.15);--red:#c0392b;
-} 
+  --latte2:#d4a87a;--shadow:rgba(28,10,0,.15);--red:#c0392b;--gold:#f1c40f;
+  --sky:#aee4f5;--sky2:#7ec9e8;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;background:var(--cream);color:var(--espresso);min-width:1024px}
 
 /* HEADER */
-#hdr{flex-shrink:0;background:var(--espresso);color:var(--cream);padding:9px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+#hdr{flex-shrink:0;background:linear-gradient(180deg,#2a1608,var(--espresso));color:var(--cream);padding:9px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.35)}
 .brand{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;letter-spacing:1px}
 .brand em{color:var(--caramel);font-style:normal}
+#hdr-stars{font-size:13px;color:var(--gold);letter-spacing:2px;margin-top:1px}
 #hdr-mid{display:flex;flex-direction:column;align-items:center;gap:1px}
-#hdr-day{font-size:12px;opacity:.75;font-weight:600}
+#hdr-day{font-size:13px;opacity:.85;font-weight:700}
 #hdr-wx{font-size:12px;color:var(--caramel);font-weight:600}
 #hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-#hdr-money{font-size:19px;font-weight:700;color:var(--caramel)}
-.rep-row{display:flex;align-items:center;gap:6px;font-size:11px;opacity:.8}
-#rep-bar{width:80px;height:5px;background:rgba(255,255,255,.18);border-radius:3px}
+#hdr-money{font-size:20px;font-weight:800;color:var(--gold)}
+.rep-row{display:flex;align-items:center;gap:6px;font-size:11px;opacity:.85}
+#rep-bar,#loan-bar{width:90px;height:5px;background:rgba(255,255,255,.18);border-radius:3px;overflow:hidden}
 #rep-fill{height:100%;background:var(--sage);border-radius:3px;transition:width .5s}
+#loan-fill{height:100%;background:var(--caramel);border-radius:3px;transition:width .5s}
 
 /* TOOLBAR */
 #toolbar{flex-shrink:0;background:var(--latte);border-bottom:2px solid var(--caramel);display:flex;align-items:center;justify-content:space-between;padding:6px 16px;gap:8px}
@@ -33,15 +36,17 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
 .tb-btn{padding:6px 13px;border:1.5px solid rgba(200,135,58,.35);border-radius:8px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:600;font-size:12px;background:var(--cream);color:var(--espresso);transition:all .18s}
 .tb-btn:hover{background:var(--caramel);color:#fff;border-color:var(--caramel)}
 #tb-r{display:flex;gap:7px;align-items:center}
+#tb-hint{font-size:12px;font-weight:600;color:rgba(28,10,0,.55)}
 
 /* BUTTONS */
 .btn{padding:8px 15px;border:none;border-radius:8px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;transition:all .18s}
-.btn-p{background:var(--caramel);color:#fff}
+.btn-p{background:var(--caramel);color:#fff;box-shadow:0 2px 6px rgba(200,135,58,.4)}
 .btn-p:hover{background:#a66d28;transform:translateY(-1px)}
-.btn-s{background:var(--sage);color:#fff}
+.btn-s{background:var(--sage);color:#fff;box-shadow:0 2px 6px rgba(74,124,89,.35)}
 .btn-s:hover{background:#3a6447;transform:translateY(-1px)}
 .btn-o{background:transparent;color:var(--caramel);border:2px solid var(--caramel)}
 .btn-o:hover{background:var(--caramel);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
 .btn:active{transform:translateY(0)!important}
 .panel{background:var(--latte);border-radius:13px;padding:13px;box-shadow:0 2px 8px var(--shadow);overflow-y:auto}
 .panel h3{font-family:'Playfair Display',serif;font-size:14px;margin-bottom:10px;border-bottom:2px solid var(--caramel);padding-bottom:5px}
@@ -50,12 +55,12 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
 #center-panel{flex-shrink:0}
 
 /* DAY CARD */
-#day-card{background:var(--espresso);color:var(--cream);padding:10px 20px 14px;border-bottom:3px solid var(--caramel)}
+#day-card{background:linear-gradient(180deg,#241307,var(--espresso));color:var(--cream);padding:10px 20px 14px;border-bottom:3px solid var(--caramel)}
 #cafe-scene{position:relative;overflow:hidden;border-radius:13px;margin-bottom:10px;border:1px solid rgba(200,135,58,.35);
   background:linear-gradient(180deg,#5a3d28 0%,#5a3d28 56%,#7a5435 56%,#6b4a2e 100%);
   box-shadow:inset 0 0 40px rgba(0,0,0,.35)}
 #cafe-windows{display:flex;gap:18px;padding:10px 16px 0;position:relative;z-index:1}
-.cafe-window{width:56px;height:40px;background:linear-gradient(180deg,#aee4f5,#7ec9e8);border:3px solid #3d2a18;border-radius:3px;position:relative;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.cafe-window{width:56px;height:40px;background:linear-gradient(180deg,var(--sky),var(--sky2));border:3px solid #3d2a18;border-radius:3px;position:relative;box-shadow:0 2px 6px rgba(0,0,0,.3);transition:background 2s}
 .cafe-window::before,.cafe-window::after{content:'';position:absolute;background:#3d2a18}
 .cafe-window::before{left:50%;top:0;bottom:0;width:3px;transform:translateX(-50%)}
 .cafe-window::after{top:50%;left:0;right:0;height:3px;transform:translateY(-50%)}
@@ -66,31 +71,39 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
 .cafe-floor{display:flex;gap:14px;padding:14px 16px 12px;flex-wrap:wrap;position:relative;z-index:1}
 .seat-slot{width:50px;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative}
 .seat-slot .table-top{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c9925a,#9c6a3a);border:2px solid #6b4423;display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 3px 5px rgba(0,0,0,.3)}
-.seat-slot.occupied .table-top{background:radial-gradient(circle at 35% 30%,#e3b27a,#b5814a)}
+.seat-slot.occupied .table-top{background:radial-gradient(circle at 35% 30%,#e3b27a,#b5814a);animation:sitdown .35s ease}
+@keyframes sitdown{from{transform:scale(.6);opacity:.4}to{transform:scale(1);opacity:1}}
 .seat-slot .seat-bar{width:36px;height:3px;background:rgba(0,0,0,.25);border-radius:2px;overflow:hidden}
 .seat-slot .seat-bar::after{content:'';display:block;height:100%;width:var(--p,0%);background:var(--sage)}
 #time-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 #time-lbl{font-size:15px;font-weight:700;color:var(--caramel);min-width:44px}
-#timebar-wrap{flex:1;height:7px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden}
+#timebar-wrap{flex:1;height:7px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden;position:relative}
 #day-timebar{height:100%;background:var(--caramel);border-radius:4px;transition:width .5s linear}
+#rush-marker{position:absolute;top:-2px;bottom:-2px;left:50%;width:12.5%;background:rgba(241,196,15,.22);border-left:1px solid rgba(241,196,15,.6);border-right:1px solid rgba(241,196,15,.6)}
 .time-cap{font-size:11px;opacity:.55}
+#rush-banner{display:none;font-size:12px;font-weight:800;color:var(--gold);animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
 #cust-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;flex-wrap:wrap}
 #eating-info{font-size:11px;color:rgba(245,230,200,.55)}
 #queue-display{display:flex;gap:5px;align-items:flex-end}
-.q-av{text-align:center;cursor:default}
+.q-av{text-align:center;cursor:default;animation:qin .3s ease}
+@keyframes qin{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
 .q-av .qf{font-size:16px;line-height:1}
 .q-av .qb{width:20px;height:3px;background:rgba(255,255,255,.18);border-radius:2px;margin-top:2px;position:relative;overflow:hidden}
 .q-av .qb::after{content:'';position:absolute;left:0;top:0;height:100%;width:var(--p,100%);background:var(--sage);border-radius:2px}
 .q-av.angry .qb::after{background:var(--red)}
+.q-av.angry .qf{animation:shake .5s ease-in-out infinite}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
 #sell-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 #day-log-line{font-size:11px;color:rgba(245,230,200,.65);margin-top:5px;min-height:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#day-earned-hdr{font-size:13px;font-weight:700;color:var(--caramel);margin-left:auto}
+#day-earned-hdr{font-size:13px;font-weight:700;color:var(--gold);margin-left:auto}
 
 /* EVENING CARD */
-#evening-card{background:var(--latte);padding:14px 20px;border-bottom:3px solid var(--caramel);max-height:260px;overflow-y:auto}
+#evening-card{background:var(--latte);padding:14px 20px;border-bottom:3px solid var(--caramel);max-height:300px;overflow-y:auto}
 .ev-stats{display:flex;gap:16px;margin-bottom:10px}
 .ev-stat{background:var(--cream);border-radius:10px;padding:8px 16px;text-align:center;flex:1}
 .ev-stat .ev-v{font-family:'Playfair Display',serif;font-size:24px;color:var(--caramel);font-weight:700}
+.ev-stat .ev-v.neg{color:var(--red)}
 .ev-stat .ev-l{font-size:10px;color:rgba(28,10,0,.5);text-transform:uppercase;letter-spacing:.4px}
 .ev-goals{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
 .ev-goal{display:flex;align-items:center;gap:7px;font-size:12px}
@@ -101,14 +114,21 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
 .ev-lft-tag{background:rgba(200,135,58,.14);border:1px solid rgba(200,135,58,.4);color:var(--caramel);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700}
 .ev-unlock{background:linear-gradient(135deg,var(--sage),#2d5c3f);border-radius:10px;padding:10px 14px;color:#fff;font-size:13px;margin-bottom:8px;animation:upop .5s ease}
 @keyframes upop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.ev-costs{background:var(--cream);border-radius:10px;padding:8px 14px;font-size:12px;margin-bottom:8px;display:flex;gap:18px;flex-wrap:wrap}
+.ev-costs b{color:var(--red)}
+#loan-box{background:linear-gradient(135deg,#2a1608,var(--espresso));color:var(--cream);border-radius:10px;padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#loan-box .lb-title{font-weight:800;font-size:13px}
+#loan-box .lb-sub{font-size:11px;opacity:.7}
+#forecast-box{font-size:12px;font-weight:600;color:rgba(28,10,0,.7);margin-bottom:8px}
 
 /* WORKBENCH */
-#workbench{flex:1;min-height:0;display:grid;grid-template-columns:195px 1fr 250px;gap:9px;padding:9px 12px}
+#workbench{flex:1;min-height:0;display:grid;grid-template-columns:205px 1fr 260px;gap:9px;padding:9px 12px}
 
 /* INGREDIENT LIST */
 .ing-item{display:flex;align-items:center;gap:7px;padding:6px 9px;margin-bottom:4px;background:var(--cream);border-radius:9px;cursor:pointer;border:1.5px solid transparent;transition:all .16s;user-select:none}
 .ing-item:hover{border-color:var(--caramel);transform:translateX(2px)}
-.ing-item span{font-size:12px;font-weight:600}
+.ing-item span{font-size:12px;font-weight:600;flex:1}
+.ing-item .ing-cost{flex:0;font-size:10px;color:rgba(28,10,0,.45);font-weight:700}
 
 /* TABLE / DROP ZONE */
 #drop-zone{min-height:120px;border:2px dashed var(--caramel);border-radius:11px;padding:9px;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:7px;align-content:flex-start;transition:background .18s;position:relative}
@@ -120,6 +140,7 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
 #rec-match{padding:8px;background:rgba(74,124,89,.1);border-radius:9px;margin-bottom:8px;min-height:46px}
 .rm-label{font-size:10px;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
 .rm-card{display:flex;align-items:center;gap:7px;padding:6px 9px;background:var(--sage);color:#fff;border-radius:7px;font-size:12px;font-weight:600}
+.rm-card .rm-profit{margin-left:auto;font-size:11px;opacity:.85}
 #exp-hint{font-size:11px;color:var(--sage);background:rgba(74,124,89,.1);border-radius:7px;padding:5px 9px;margin-bottom:7px;display:none}
 
 /* SHOWCASE */
@@ -131,37 +152,33 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
 .qb:hover{background:var(--caramel);color:#fff}
 .qv{font-size:11px;font-weight:700;min-width:16px;text-align:center}
 #budget-bar{background:var(--cream);border-radius:7px;padding:7px;margin-bottom:8px;font-size:11px}
-#bprog{height:6px;background:rgba(28,10,0,.1);border-radius:3px;margin-top:3px}
-#bfill{height:100%;background:var(--caramel);border-radius:3px;transition:width .3s}
 .goal-item{display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--cream);border-radius:7px;margin-bottom:3px}
 .goal-chk{font-size:13px;flex-shrink:0;width:16px;text-align:center}
 .goal-desc{flex:1;font-size:11px;font-weight:600}
 .goal-rwd{font-size:10px;font-weight:700;color:var(--caramel)}
 .demand-row{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
 .demand-tag{background:rgba(200,135,58,.14);border:1px solid rgba(200,135,58,.4);color:var(--caramel);border-radius:5px;padding:2px 6px;font-size:10px;font-weight:700}
-.rm-label{font-size:10px;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
 .section-sep{border:none;border-top:1px solid rgba(200,135,58,.25);margin:8px 0}
+#wx-tip{font-size:11px;background:rgba(200,135,58,.12);border:1px solid rgba(200,135,58,.35);border-radius:7px;padding:6px 9px;margin-bottom:8px;font-weight:600}
 
-/* RECIPE BOOK MODAL */
-#rb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;align-items:center;justify-content:center}
-#rb-overlay.active{display:flex}
-#rb-modal{background:var(--cream);border-radius:18px;padding:22px;width:700px;max-height:82vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.35)}
-#rb-modal h2{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:3px}
-#rb-modal .sub{font-size:12px;color:rgba(28,10,0,.5);margin-bottom:14px}
+/* MODALS */
+.overlay{display:none;position:fixed;inset:0;background:rgba(20,8,0,.55);backdrop-filter:blur(2px);z-index:600;align-items:center;justify-content:center}
+.overlay.active{display:flex}
+.modal{background:var(--cream);border-radius:18px;padding:22px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.35);animation:min .25s ease}
+@keyframes min{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h2{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:3px}
+.modal .sub{font-size:12px;color:rgba(28,10,0,.5);margin-bottom:14px}
+#rb-modal{width:700px}
 .rb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .rb-card{background:var(--latte);border-radius:11px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:5px;border:2px solid transparent;transition:all .18s}
 .rb-card.unlocked{border-color:rgba(200,135,58,.4)}
-.rb-card.locked{opacity:.4;filter:grayscale(.6)}
+.rb-card.locked{opacity:.55;filter:grayscale(.6)}
 .rb-card .rc-name{font-size:11px;font-weight:700;text-align:center}
 .rb-card .rc-price{font-size:12px;color:var(--caramel);font-weight:700}
-.rb-card .rc-ings{font-size:9px;color:rgba(28,10,0,.5);text-align:center}
+.rb-card .rc-ings{font-size:9px;color:rgba(28,10,0,.55);text-align:center}
+.rb-card .rc-how{font-size:9px;color:var(--sage);text-align:center;font-weight:700}
 .rb-section{font-family:'Playfair Display',serif;font-size:13px;margin:10px 0 5px;color:var(--caramel)}
-
-/* DECOR MODAL */
-#decor-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;align-items:center;justify-content:center}
-#decor-overlay.active{display:flex}
-#decor-modal{background:var(--cream);border-radius:18px;padding:22px;width:820px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.35)}
-#decor-modal h2{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:14px}
+#decor-modal{width:820px}
 #decor-layout{display:grid;grid-template-columns:1fr 270px;gap:16px;align-items:start}
 #dc{display:block;width:100%;border-radius:11px;background:#e8d8b8}
 .di-item{background:var(--latte);border-radius:9px;padding:9px;margin-bottom:7px;display:flex;align-items:center;gap:8px}
@@ -171,6 +188,18 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
 .di-item .ddesc{font-size:10px;color:rgba(28,10,0,.5)}
 .di-item .dprice{color:var(--caramel);font-weight:700;font-size:12px}
 .owned-badge{display:inline-block;padding:2px 7px;background:var(--sage);color:#fff;border-radius:6px;font-size:10px;font-weight:700}
+
+/* INTRO / VICTORY */
+#intro-modal{width:560px;text-align:center}
+#intro-modal .big-emoji{font-size:52px;margin-bottom:8px}
+#intro-modal p{font-size:14px;line-height:1.55;margin-bottom:12px;color:rgba(28,10,0,.8);text-align:left}
+#intro-modal .intro-steps{text-align:left;background:var(--latte);border-radius:11px;padding:12px 16px;margin-bottom:14px}
+#intro-modal .intro-steps div{font-size:13px;margin-bottom:7px;display:flex;gap:9px;align-items:flex-start}
+#intro-modal .intro-steps b{color:var(--caramel)}
+#victory-modal{width:520px;text-align:center;background:linear-gradient(160deg,#fff8e8,var(--cream))}
+#victory-modal .big-emoji{font-size:64px;animation:vpop .8s ease}
+@keyframes vpop{0%{transform:scale(0) rotate(-30deg)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+#victory-modal p{font-size:14px;line-height:1.5;margin:12px 0;color:rgba(28,10,0,.8)}
 
 /* NOTIFICATIONS */
 #nw{position:fixed;top:68px;right:16px;z-index:900;display:flex;flex-direction:column;gap:6px;pointer-events:none}
@@ -194,22 +223,28 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
 <body>
 
 <div id="hdr">
-  <div class="brand">☕ La <em>Fournée</em></div>
+  <div>
+    <div class="brand">☕ La <em>Fournée</em></div>
+    <div id="hdr-stars">★☆☆☆☆</div>
+  </div>
   <div id="hdr-mid">
     <div id="hdr-day">День 1 · Понедельник</div>
     <div id="hdr-wx">🌤 Солнечно</div>
   </div>
   <div id="hdr-r">
     <div id="hdr-money">500 ₽</div>
-    <div class="rep-row">Репутация: <span id="rep-pct">50%</span><div id="rep-bar"><div id="rep-fill" style="width:50%"></div></div></div>
+    <div class="rep-row">Репутация <span id="rep-pct">50%</span><div id="rep-bar"><div id="rep-fill" style="width:50%"></div></div></div>
+    <div class="rep-row" id="loan-row">Кредит <span id="loan-left">15000₽</span><div id="loan-bar"><div id="loan-fill" style="width:0%"></div></div></div>
   </div>
 </div>
 
 <div id="toolbar">
   <div class="tb-l">
     <button class="tb-btn" onclick="openRB()">📖 Рецепты</button>
-    <button class="tb-btn" onclick="openDecor()">🏠 Интерьер</button>
+    <button class="tb-btn" onclick="openDecor()">🏠 Кофейня</button>
+    <button class="tb-btn" onclick="openIntro()">❔ Как играть</button>
   </div>
+  <div id="tb-hint"></div>
   <div id="tb-r"></div>
 </div>
 
@@ -218,9 +253,10 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
   <div id="day-card" style="display:none">
     <div id="time-row">
       <span class="time-cap">08:00</span>
-      <div id="timebar-wrap"><div id="day-timebar" style="width:0%"></div></div>
+      <div id="timebar-wrap"><div id="rush-marker"></div><div id="day-timebar" style="width:0%"></div></div>
       <span id="time-lbl">08:00</span>
       <span class="time-cap">16:00</span>
+      <span id="rush-banner">🔥 ЧАС ПИК</span>
       <span id="day-earned-hdr">0 ₽</span>
     </div>
     <div id="cafe-scene">
@@ -243,7 +279,7 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
     <div id="sell-row">
       <button class="btn btn-s" style="padding:7px 18px" onclick="sellToCust()">✓ Обслужить</button>
       <button class="btn" style="background:var(--espresso);color:var(--cream);padding:7px 18px" onclick="rejectCust()">✗ Нет в наличии</button>
-      <button class="btn btn-o" id="btn-auto" style="padding:7px 14px;font-size:12px" onclick="toggleAuto()">🤖 Авто: ВЫКЛ</button>
+      <button class="btn btn-o" id="btn-auto" style="padding:7px 14px;font-size:12px;display:none" onclick="toggleAuto()">🤝 Помощник: ВЫКЛ</button>
     </div>
     <div id="day-log-line"></div>
   </div>
@@ -261,24 +297,24 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
   <div class="panel">
     <h3>Рабочий стол</h3>
     <div id="drop-zone"><div id="drop-hint">Нажмите на ингредиент или перетащите сюда</div></div>
-    <div id="exp-hint">✨ Неизвестная комбинация — попробуйте эксперимент!</div>
+    <div id="exp-hint"></div>
     <div id="rec-match"><div class="rm-label">Распознан рецепт</div><div id="rm-res" style="color:rgba(28,10,0,.4);font-size:12px">Пока ничего...</div></div>
     <div style="display:flex;gap:6px;flex-wrap:wrap">
       <button class="btn btn-p" style="font-size:12px;padding:7px 14px" onclick="addToShowcase()">+ В витрину</button>
-      <button class="btn btn-s" style="font-size:12px;padding:7px 14px" onclick="tryExp()">🧪 Эксперимент</button>
+      <button class="btn btn-s" style="font-size:12px;padding:7px 14px" id="btn-exp" onclick="tryExp()">🧪 Эксперимент</button>
       <button class="btn btn-o" style="font-size:12px;padding:7px 12px" onclick="clearTable()">✕ Очистить</button>
     </div>
   </div>
   <!-- Showcase -->
   <div class="panel" id="sc-col">
     <h3>Витрина</h3>
+    <div id="wx-tip"></div>
     <div id="budget-bar">
-      <div>Бюджет: <strong id="bleft">500 ₽</strong></div>
-      <div id="bprog"><div id="bfill" style="width:0%"></div></div>
+      <div>Деньги: <strong id="bleft">500 ₽</strong> · Потрачено утром: <strong id="bspent">0 ₽</strong></div>
     </div>
     <div id="sc-list"></div>
     <div id="sc-empty" style="color:rgba(28,10,0,.4);font-size:12px;text-align:center;padding:12px">Витрина пуста</div>
-    <div style="font-size:10px;color:rgba(28,10,0,.4);margin-bottom:6px">Позиций: <span id="cap-used">0</span>/20</div>
+    <div style="font-size:10px;color:rgba(28,10,0,.4);margin-bottom:6px">Позиций: <span id="cap-used">0</span>/<span id="cap-max">20</span></div>
     <div id="open-btn-wrap"><button class="btn btn-p" style="width:100%;font-size:13px" onclick="openBakery()">Открыть кофейню ☀️</button></div>
     <hr class="section-sep">
     <div id="goals-sec" style="display:none">
@@ -286,17 +322,17 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
       <div id="goals-list"></div>
     </div>
     <div id="demand-sec" style="display:none">
-      <div class="rm-label">📋 Вчера спрашивали</div>
+      <div class="rm-label">📋 Вчера спрашивали, но не было</div>
       <div id="demand-list" class="demand-row"></div>
     </div>
   </div>
 </div>
 
 <!-- RECIPE BOOK MODAL -->
-<div id="rb-overlay" onclick="if(event.target===this)closeRB()">
-  <div id="rb-modal">
+<div id="rb-overlay" class="overlay" onclick="if(event.target===this)closeRB()">
+  <div id="rb-modal" class="modal">
     <h2>📖 Книга рецептов</h2>
-    <div class="sub">Нажмите на ингредиент или перетащите на рабочий стол</div>
+    <div class="sub">Соберите ингредиенты закрытого рецепта на столе и нажмите «Эксперимент», чтобы открыть его</div>
     <div class="rb-section">Выпечка</div>
     <div class="rb-grid" id="rb-bakery"></div>
     <div class="rb-section">Напитки</div>
@@ -310,13 +346,13 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
 </div>
 
 <!-- DECOR MODAL -->
-<div id="decor-overlay" onclick="if(event.target===this)closeDecor()">
-  <div id="decor-modal">
-    <h2>🏠 Интерьер кофейни</h2>
+<div id="decor-overlay" class="overlay" onclick="if(event.target===this)closeDecor()">
+  <div id="decor-modal" class="modal">
+    <h2>🏠 Моя кофейня</h2>
     <div id="decor-layout">
       <canvas id="dc" width="500" height="280"></canvas>
       <div>
-        <div style="font-size:12px;color:rgba(28,10,0,.5);margin-bottom:10px">Уютный интерьер привлекает больше гостей и повышает настроение клиентов</div>
+        <div style="font-size:12px;color:rgba(28,10,0,.5);margin-bottom:10px">Улучшения работают каждый день. Уют привлекает гостей, персонал экономит время.</div>
         <div id="decor-list"></div>
       </div>
     </div>
@@ -326,101 +362,142 @@ body{display:flex;flex-direction:column;font-family:'Nunito',sans-serif;backgrou
   </div>
 </div>
 
+<!-- INTRO MODAL -->
+<div id="intro-overlay" class="overlay">
+  <div id="intro-modal" class="modal">
+    <div class="big-emoji">🥐</div>
+    <h2>Добро пожаловать в La Fournée!</h2>
+    <p>Вы взяли кредит <b>15 000 ₽</b> и открыли пекарню-кофейню своей мечты. Выплатите кредит — и кофейня станет по-настоящему вашей!</p>
+    <div class="intro-steps">
+      <div><b>1.</b><span><b>Утром</b> готовьте: соберите ингредиенты рецепта на рабочем столе и отправьте блюдо в витрину. Каждое блюдо стоит денег — считайте себестоимость.</span></div>
+      <div><b>2.</b><span><b>Смотрите на погоду</b>: в дождь берут горячий кофе, в жару — лимонад. Прогноз на завтра показывается вечером.</span></div>
+      <div><b>3.</b><span><b>Днём</b> обслуживайте гостей, пока у них не кончилось терпение. В 12:00 — час пик! Быстрое обслуживание = чаевые больше.</span></div>
+      <div><b>4.</b><span><b>Вечером</b> платите аренду, гасите кредит и открывайте новые рецепты экспериментами.</span></div>
+    </div>
+    <button class="btn btn-p" style="font-size:14px;padding:10px 26px" onclick="closeIntro()">Начать печь! 🔥</button>
+  </div>
+</div>
+
+<!-- VICTORY MODAL -->
+<div id="victory-overlay" class="overlay">
+  <div id="victory-modal" class="modal">
+    <div class="big-emoji">🏆</div>
+    <h2>Кредит выплачен!</h2>
+    <p id="victory-text">Вы прошли путь от долгов до собственной кофейни. La Fournée теперь полностью ваша! Игра продолжается — растите репутацию до 5 звёзд и откройте все рецепты.</p>
+    <button class="btn btn-p" style="font-size:14px;padding:10px 26px" onclick="closeVictory()">Продолжить 🎉</button>
+  </div>
+</div>
+
 <div id="nw"></div>
 
 <script>
 // ─── DATA ─────────────────────────────────────────────────
 const DAYS=['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье'];
 const WEATHERS=[
-  {name:'Солнечно',icon:'🌤'},{name:'Облачно',icon:'☁️'},{name:'Дождь',icon:'🌧'},
-  {name:'Жара',icon:'☀️'},{name:'Ветер',icon:'💨'}
+  {id:'sun',name:'Солнечно',icon:'🌤',spawn:1.0,tip:'Отличный день — спрос обычный, готовьте всего понемногу.'},
+  {id:'cloud',name:'Облачно',icon:'☁️',spawn:0.9,tip:'Пасмурно — гостей чуть меньше, зато любят выпечку.'},
+  {id:'rain',name:'Дождь',icon:'🌧',spawn:0.8,tip:'Дождь! Гости хотят согреться — горячий кофе и шоколад нарасхват.'},
+  {id:'heat',name:'Жара',icon:'☀️',spawn:1.1,tip:'Жара! Лимонад разлетается, горячее почти не берут.'},
+  {id:'wind',name:'Ветер',icon:'💨',spawn:0.85,tip:'Ветрено — прохожих меньше, но выпечка греет душу.'},
 ];
+const HOT_DRINKS=['espresso','cappuccino','latte','matcha_latte','honey_latte','hot_chocolate','vanilla_latte'];
 
 const INGS=[
-  {id:'flour',name:'Мука'},{id:'butter',name:'Масло'},{id:'milk',name:'Молоко'},
-  {id:'sugar',name:'Сахар'},{id:'cinnamon',name:'Корица'},{id:'eggs',name:'Яйца'},
-  {id:'blueberry',name:'Черника'},{id:'water',name:'Вода'},{id:'yeast',name:'Дрожжи'},
-  {id:'chocolate',name:'Шоколад'},{id:'coffee',name:'Кофе'},{id:'foam',name:'Пена'},
-  {id:'lemon',name:'Лимон'},{id:'cream',name:'Сливки'},{id:'vanilla',name:'Ваниль'},
-  {id:'honey',name:'Мёд'},{id:'matcha',name:'Матча'},
+  {id:'flour',name:'Мука',cost:5},{id:'butter',name:'Масло',cost:12},{id:'milk',name:'Молоко',cost:8},
+  {id:'sugar',name:'Сахар',cost:5},{id:'cinnamon',name:'Корица',cost:14},{id:'eggs',name:'Яйца',cost:10},
+  {id:'blueberry',name:'Черника',cost:22},{id:'water',name:'Вода',cost:1},{id:'yeast',name:'Дрожжи',cost:6},
+  {id:'chocolate',name:'Шоколад',cost:26},{id:'coffee',name:'Кофе',cost:22},{id:'foam',name:'Пена',cost:5},
+  {id:'lemon',name:'Лимон',cost:12},{id:'cream',name:'Сливки',cost:16},{id:'vanilla',name:'Ваниль',cost:24},
+  {id:'honey',name:'Мёд',cost:20},{id:'matcha',name:'Матча',cost:38},
 ];
+function ingCost(id){const i=INGS.find(x=>x.id===id);return i?i.cost:10;}
+function recipeCost(r){return r.ings.reduce((a,i)=>a+ingCost(i),0);}
 
 const RECIPES=[
-  // ─ Выпечка (unlocked) ─
+  // ─ Выпечка (открыты) ─
   {id:'croissant',name:'Круассан',price:80,ings:['flour','butter','milk'],cat:'bakery'},
   {id:'cinnamon_bun',name:'Булочка с корицей',price:65,ings:['flour','sugar','cinnamon'],cat:'bakery'},
   {id:'muffin',name:'Маффин черничный',price:90,ings:['flour','eggs','blueberry'],cat:'bakery'},
   {id:'baguette',name:'Багет',price:70,ings:['flour','water','yeast'],cat:'bakery'},
   {id:'eclair',name:'Эклер',price:120,ings:['flour','eggs','chocolate'],cat:'bakery'},
-  // ─ Напитки (unlocked) ─
+  // ─ Напитки (открыты) ─
   {id:'espresso',name:'Эспрессо',price:90,ings:['coffee','water'],cat:'drink'},
   {id:'cappuccino',name:'Капучино',price:140,ings:['coffee','milk','foam'],cat:'drink'},
   {id:'latte',name:'Латте',price:150,ings:['coffee','milk','cream'],cat:'drink'},
   {id:'lemonade',name:'Лимонад',price:80,ings:['lemon','water','sugar'],cat:'drink'},
-  // ─ Выпечка (locked) ─
+  // ─ Выпечка (закрыты) ─
   {id:'almond_croissant',name:'Круассан с миндалём',price:115,ings:['flour','butter','cream'],cat:'bakery',locked:true},
   {id:'honey_cake',name:'Медовик',price:210,ings:['flour','eggs','honey'],cat:'bakery',locked:true},
   {id:'chocolate_croissant',name:'Шоколадный круассан',price:105,ings:['flour','butter','chocolate'],cat:'bakery',locked:true},
   {id:'waffle',name:'Вафля бельгийская',price:95,ings:['flour','eggs','butter'],cat:'bakery',locked:true},
   {id:'tart',name:'Тарт с ягодами',price:130,ings:['flour','butter','sugar'],cat:'bakery',locked:true},
   {id:'cheesecake',name:'Чизкейк',price:180,ings:['flour','cream','eggs'],cat:'bakery',locked:true},
-  // ─ Напитки (locked) ─
+  // ─ Напитки (закрыты) ─
   {id:'matcha_latte',name:'Матча латте',price:175,ings:['matcha','milk','foam'],cat:'drink',locked:true},
   {id:'honey_latte',name:'Медовый латте',price:160,ings:['coffee','milk','honey'],cat:'drink',locked:true},
   {id:'hot_chocolate',name:'Горячий шоколад',price:130,ings:['chocolate','milk','foam'],cat:'drink',locked:true},
   {id:'vanilla_latte',name:'Ванильный латте',price:165,ings:['coffee','cream','vanilla'],cat:'drink',locked:true},
-  // ─ Особые (locked) ─
-  {id:'recipe_of_day',name:'Авторский рецепт',price:140,ings:[],cat:'special',locked:true},
-  {id:'breakfast',name:'Меню завтрака',price:260,ings:['flour','eggs','butter'],cat:'special',locked:true},
+  // ─ Особые (закрыты, за достижения) ─
+  {id:'recipe_of_day',name:'Авторский рецепт',price:200,ings:['matcha','honey','cream'],cat:'special',locked:true,byStars:3},
+  {id:'breakfast',name:'Меню завтрака',price:260,ings:['flour','eggs','butter','coffee'],cat:'special',locked:true,byStars:4},
 ];
+const EXP_COST=40; // стоимость исследования нового рецепта
 
 const CTYPES=[
-  {id:'student',name:'Студент',emoji:'🧑‍🎓',speed:1.2,patience:15,prefs:['espresso','baguette','cinnamon_bun'],tip:.05},
-  {id:'bizlady',name:'Бизнес-леди',emoji:'👩‍💼',speed:1.8,patience:12,prefs:['latte','cappuccino','croissant','vanilla_latte'],tip:.2},
-  {id:'tourist',name:'Турист',emoji:'🧳',speed:1.0,patience:25,prefs:null,tip:.15},
-  {id:'hipster',name:'Хипстер',emoji:'🧔',speed:1.1,patience:20,prefs:['matcha_latte','eclair','recipe_of_day','honey_latte'],tip:.1},
-  {id:'granny',name:'Пенсионерка',emoji:'👵',speed:0.6,patience:30,prefs:['lemonade','baguette','cinnamon_bun','honey_cake'],tip:0},
-  {id:'mom',name:'Мама с коляской',emoji:'👩',speed:0.8,patience:22,prefs:['latte','croissant','muffin','hot_chocolate'],tip:.05},
+  {id:'student',name:'Студент',emoji:'🧑‍🎓',patience:18,prefs:['espresso','baguette','cinnamon_bun'],tip:.05},
+  {id:'bizlady',name:'Бизнес-леди',emoji:'👩‍💼',patience:12,prefs:['latte','cappuccino','croissant','vanilla_latte'],tip:.2},
+  {id:'tourist',name:'Турист',emoji:'🧳',patience:26,prefs:null,tip:.15},
+  {id:'hipster',name:'Хипстер',emoji:'🧔',patience:20,prefs:['matcha_latte','eclair','recipe_of_day','honey_latte'],tip:.1},
+  {id:'granny',name:'Пенсионерка',emoji:'👵',patience:32,prefs:['lemonade','baguette','cinnamon_bun','honey_cake'],tip:0},
+  {id:'mom',name:'Мама с коляской',emoji:'👩',patience:22,prefs:['latte','croissant','muffin','hot_chocolate'],tip:.05},
 ];
 
 const DECORS=[
-  {id:'table',name:'Уютный столик',desc:'+5% туристов',price:300,icon:'🪑'},
-  {id:'painting',name:'Картина',desc:'+10% хипстеров',price:500,icon:'🖼'},
-  {id:'plant',name:'Растение',desc:'+2% репутация/день',price:200,icon:'🌿'},
-  {id:'lighting',name:'Тёплый свет',desc:'+5% все клиенты',price:800,icon:'💡'},
-  {id:'menu_board',name:'Меловая доска',desc:'+8% продажи',price:400,icon:'📋'},
-  {id:'jazz',name:'Живая музыка',desc:'+30% терпение',price:1200,icon:'🎵'},
+  {id:'plant',name:'Растение',desc:'+2 репутации каждый вечер',price:200,icon:'🌿'},
+  {id:'table',name:'Уютные столики',desc:'+2 посадочных места',price:350,icon:'🪑'},
+  {id:'menu_board',name:'Меловая доска',desc:'+10% к ценам (гости доверяют меню)',price:450,icon:'📋'},
+  {id:'painting',name:'Картина',desc:'Хипстеры и туристы заходят чаще',price:500,icon:'🖼'},
+  {id:'lighting',name:'Тёплый свет',desc:'Гостей на 15% больше',price:800,icon:'💡'},
+  {id:'assistant',name:'Помощник-бариста',desc:'Автообслуживание (зарплата 120₽/день)',price:900,icon:'🤝'},
+  {id:'jazz',name:'Живая музыка',desc:'+35% терпение гостей',price:1200,icon:'🎵'},
 ];
+const RENT=300,ASSISTANT_WAGE=120;
 
 const GOAL_POOL=[
-  {id:'earn300',desc:'Заработать 300₽',check:()=>S.dayStats.earned>=300,reward:60},
-  {id:'earn600',desc:'Заработать 600₽',check:()=>S.dayStats.earned>=600,reward:120},
-  {id:'earn1000',desc:'Заработать 1000₽',check:()=>S.dayStats.earned>=1000,reward:200},
-  {id:'sell5',desc:'Продать 5 блюд',check:()=>Object.values(S.dayStats.sold).reduce((a,b)=>a+b,0)>=5,reward:60},
-  {id:'sell10',desc:'Продать 10 блюд',check:()=>Object.values(S.dayStats.sold).reduce((a,b)=>a+b,0)>=10,reward:120},
+  {id:'earn300',desc:'Выручка 300₽',check:()=>S.dayStats.earned>=300,reward:60},
+  {id:'earn600',desc:'Выручка 600₽',check:()=>S.dayStats.earned>=600,reward:120},
+  {id:'earn1000',desc:'Выручка 1000₽',check:()=>S.dayStats.earned>=1000,reward:200},
+  {id:'sell5',desc:'Продать 5 блюд',check:()=>soldTotal()>=5,reward:60},
+  {id:'sell10',desc:'Продать 10 блюд',check:()=>soldTotal()>=10,reward:120},
   {id:'nounhappy',desc:'Ни одного недовольного',check:()=>S.dayStats.unhappy===0,reward:100},
   {id:'rep70',desc:'Репутация выше 70%',check:()=>S.rep>=70,reward:80},
-  {id:'variety',desc:'Продать 3 вида блюд',check:()=>Object.keys(S.dayStats.sold).filter(k=>S.dayStats.sold[k]>0).length>=3,reward:70},
-  {id:'coffee3',desc:'Продать 3 кофейных напитка',check:()=>['espresso','cappuccino','latte','matcha_latte','honey_latte','vanilla_latte'].reduce((a,id)=>a+(S.dayStats.sold[id]||0),0)>=3,reward:60},
-  {id:'hipster',desc:'Обслужить хипстера',check:()=>(S.dayStats.byType||{}).hipster>=1,reward:40},
+  {id:'variety',desc:'Продать 3 разных блюда',check:()=>Object.keys(S.dayStats.sold).filter(k=>S.dayStats.sold[k]>0).length>=3,reward:70},
+  {id:'coffee3',desc:'Продать 3 кофейных напитка',check:()=>HOT_DRINKS.reduce((a,id)=>a+(S.dayStats.sold[id]||0),0)>=3,reward:60},
+  {id:'fast5',desc:'5 быстрых обслуживаний',check:()=>S.dayStats.fast>=5,reward:90},
   {id:'tourist',desc:'Обслужить туриста',check:()=>(S.dayStats.byType||{}).tourist>=1,reward:50},
-  {id:'exp1',desc:'Провести эксперимент',check:()=>S.dayStats.exp>=1,reward:30},
-  {id:'sell15',desc:'Продать 15 блюд',check:()=>Object.values(S.dayStats.sold).reduce((a,b)=>a+b,0)>=15,reward:180},
-  {id:'granny',desc:'Обслужить пенсионерку',check:()=>(S.dayStats.byType||{}).granny>=1,reward:35},
-  {id:'bake3',desc:'Испечь 3 вида выпечки',check:()=>Object.keys(S.dayStats.sold).filter(k=>{const r=RECIPES.find(x=>x.id===k);return r&&r.cat==='bakery'&&S.dayStats.sold[k]>0}).length>=3,reward:70},
-  {id:'earn1500',desc:'Заработать 1500₽',check:()=>S.dayStats.earned>=1500,reward:300},
+  {id:'sell15',desc:'Продать 15 блюд',check:()=>soldTotal()>=15,reward:180},
+  {id:'bake3',desc:'Продать 3 вида выпечки',check:()=>Object.keys(S.dayStats.sold).filter(k=>{const r=RECIPES.find(x=>x.id===k);return r&&r.cat==='bakery'&&S.dayStats.sold[k]>0}).length>=3,reward:70},
+  {id:'earn1500',desc:'Выручка 1500₽',check:()=>S.dayStats.earned>=1500,reward:300},
 ];
+function soldTotal(){return Object.values(S.dayStats.sold).reduce((a,b)=>a+b,0);}
 
 // ─── STATE ─────────────────────────────────────────────────
+const LOAN_TOTAL=15000;
 let S={
-  day:1,money:500,rep:50,weather:WEATHERS[0],
-  showcase:{},table:[],dayStats:{earned:0,sold:{},unhappy:0,exp:0,byType:{},wantedMissing:{}},
+  day:1,money:500,rep:50,weather:WEATHERS[0],forecast:null,
+  loan:LOAN_TOTAL,won:false,introSeen:false,
+  showcase:{},table:[],
+  dayStats:{earned:0,spent:0,sold:{},unhappy:0,exp:0,fast:0,byType:{},wantedMissing:{}},
   unlocked:['croissant','cinnamon_bun','muffin','baguette','eclair','espresso','cappuccino','latte','lemonade'],
-  decor:{},totalStats:{croissants:0,maxDay:0,repDays:0,day5:false,exps:0,eclairs:0,lattes:0},
+  decor:{},totalStats:{maxDay:0,repDays:0,exps:0,served:0},
   autoSell:false,dayEarned:0,goals:[],dayOpen:false,dayDone:false,goalsRewarded:false,
   prevWantedMissing:{},
 };
 let budgetUsed=0,dayPaused=false;
+
+function stars(){return Math.max(1,Math.min(5,1+Math.floor(S.rep/20)));}
+function seatCount(){return 6+(S.decor['table']?2:0);}
+function priceOf(r){return Math.round(r.price*(S.decor['menu_board']?1.1:1));}
 
 // ─── AUDIO ─────────────────────────────────────────────────
 let aCtx;
@@ -507,39 +584,57 @@ function updateHdr(){
   document.getElementById('hdr-money').textContent=`${S.money} ₽`;
   document.getElementById('rep-pct').textContent=`${Math.round(S.rep)}%`;
   document.getElementById('rep-fill').style.width=`${Math.min(100,S.rep)}%`;
+  const st=stars();
+  document.getElementById('hdr-stars').textContent='★'.repeat(st)+'☆'.repeat(5-st);
+  const lr=document.getElementById('loan-row');
+  if(S.loan>0){
+    lr.style.display='flex';
+    document.getElementById('loan-left').textContent=`${S.loan}₽`;
+    document.getElementById('loan-fill').style.width=`${(1-S.loan/LOAN_TOTAL)*100}%`;
+  }else lr.style.display='none';
 }
 
 // ─── TOOLBAR ───────────────────────────────────────────────
 function updateToolbar(){
-  const r=document.getElementById('tb-r');
+  const r=document.getElementById('tb-r'),h=document.getElementById('tb-hint');
   if(!S.dayOpen&&!S.dayDone){
+    h.textContent='🌅 Утро: подготовьте витрину';
     r.innerHTML=`<button class="btn btn-p" style="font-size:12px;padding:7px 16px" onclick="openBakery()">☀️ Открыть кофейню</button>`;
   } else if(S.dayOpen&&!S.dayDone){
+    h.textContent='☀️ Кофейня открыта';
     const pauseLbl=dayPaused?'▶ Продолжить':'⏸ Пауза';
     const pauseStyle=dayPaused?'background:var(--sage);color:#fff':'';
     r.innerHTML=`<button class="btn btn-o" id="btn-pause" style="font-size:12px;padding:7px 13px;${pauseStyle}" onclick="togglePause()">${pauseLbl}</button>
     <button class="btn" style="background:var(--espresso);color:var(--cream);font-size:12px;padding:7px 13px" onclick="endDay()">🌙 Закрыть день</button>`;
   } else {
+    h.textContent='🌙 Вечер: итоги дня';
     r.innerHTML=`<button class="btn btn-p" style="font-size:12px;padding:7px 16px" onclick="nextDay()">Следующий день →</button>`;
   }
 }
 
 // ─── MORNING / WORKBENCH ───────────────────────────────────
 function pickGoals(){
-  const pool=[...GOAL_POOL];
+  // тяжёлые денежные цели не выпадают в первые дни
+  const pool=GOAL_POOL.filter(g=>{
+    if(S.day<3&&(g.id==='earn1500'||g.id==='sell15'))return false;
+    if(S.day<2&&g.id==='earn1000')return false;
+    return true;
+  });
   const easy=pool.filter(g=>g.reward<=80),hard=pool.filter(g=>g.reward>80);
   const picks=[];
-  for(let i=0;i<2&&easy.length;i++){const j=Math.floor(Math.random()*easy.length);picks.push(easy.splice(j,1)[0]);}
-  for(let i=picks.length;i<3&&hard.length;i++){const j=Math.floor(Math.random()*hard.length);picks.push(hard.splice(j,1)[0]);}
+  for(let i=0;i<2&&easy.length;i++){const j=Math.floor(Math.random()*easy.length);picks.push(easy.splice(j,1)[0].id);}
+  for(let i=picks.length;i<3&&hard.length;i++){const j=Math.floor(Math.random()*hard.length);picks.push(hard.splice(j,1)[0].id);}
   S.goals=picks;
 }
+function goalObjs(){return (S.goals||[]).map(id=>GOAL_POOL.find(g=>g.id===id||g===id)||((typeof id==='object')?GOAL_POOL.find(g=>g.id===id.id):null)).filter(Boolean);}
 
 function renderGoals(){
   const sec=document.getElementById('goals-sec'),list=document.getElementById('goals-list');
-  if(!S.goals||!S.goals.length){sec.style.display='none';return;}
+  const gs=goalObjs();
+  if(!gs.length){sec.style.display='none';return;}
   sec.style.display='block';list.innerHTML='';
-  S.goals.forEach(g=>{
-    const done=S.dayDone&&g.check&&g.check();
+  gs.forEach(g=>{
+    const done=g.check&&g.check()&&(S.dayOpen||S.dayDone);
     const el=document.createElement('div');el.className='goal-item';
     el.innerHTML=`<span class="goal-chk">${done?'✅':'🎯'}</span><span class="goal-desc">${g.desc}</span><span class="goal-rwd">+${g.reward}₽</span>`;
     list.appendChild(el);
@@ -559,9 +654,13 @@ function renderDemand(){
   });
 }
 
+function renderWxTip(){
+  const el=document.getElementById('wx-tip');
+  el.innerHTML=`${S.weather.icon} <b>${S.weather.name}.</b> ${S.weather.tip}`;
+}
+
 function renderWorkbench(){
-  renderIngs();renderSidebar();updateBudget();renderGoals();renderDemand();
-  // show/hide open button
+  renderIngs();renderSidebar();updateBudget();renderGoals();renderDemand();renderWxTip();
   document.getElementById('open-btn-wrap').style.display=S.dayOpen?'none':'block';
 }
 
@@ -569,7 +668,7 @@ function renderIngs(){
   const l=document.getElementById('ing-list');l.innerHTML='';
   INGS.forEach(ing=>{
     const d=document.createElement('div');d.className='ing-item';d.draggable=true;d.dataset.id=ing.id;
-    d.innerHTML=ingIcon(ing.id,22)+`<span>${ing.name}</span>`;
+    d.innerHTML=ingIcon(ing.id,22)+`<span>${ing.name}</span><span class="ing-cost">${ing.cost}₽</span>`;
     d.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',ing.id);d.style.opacity='.4';});
     d.addEventListener('dragend',()=>d.style.opacity='1');
     d.addEventListener('click',()=>{if(S.table.length<5){S.table.push(ing.id);brew();renderTable();checkMatch();}else notify('Максимум 5 ингредиентов','b');});
@@ -600,58 +699,83 @@ function renderTable(){
   });
 }
 
+function findMatch(list){
+  const sorted=[...S.table].sort();
+  for(const r of list){
+    if(JSON.stringify([...r.ings].sort())===JSON.stringify(sorted))return r;
+  }
+  return null;
+}
+
 function checkMatch(){
   const res=document.getElementById('rm-res'),exp=document.getElementById('exp-hint');
-  const sorted=[...S.table].sort();
-  if(!sorted.length){res.innerHTML='<span style="opacity:.4">Пока ничего...</span>';exp.style.display='none';return;}
-  let m=null;
-  for(const r of RECIPES){
-    if(!S.unlocked.includes(r.id))continue;
-    if(JSON.stringify([...r.ings].sort())===JSON.stringify(sorted)){m=r;break;}
+  exp.style.display='none';
+  if(!S.table.length){res.innerHTML='<span style="opacity:.4">Пока ничего...</span>';return;}
+  const m=findMatch(RECIPES.filter(r=>S.unlocked.includes(r.id)));
+  if(m){
+    const cost=recipeCost(m),profit=priceOf(m)-cost;
+    res.innerHTML=`<div class="rm-card">${recipeIcon(m.id,26)}<strong>${m.name}</strong><span>${priceOf(m)}₽</span><span class="rm-profit">себест. ${cost}₽ · прибыль +${profit}₽</span></div>`;
+    return;
   }
-  if(m){res.innerHTML=`<div class="rm-card">${recipeIcon(m.id,26)}<strong>${m.name}</strong><span>${m.price} ₽</span></div>`;exp.style.display='none';return;}
-  for(const r of RECIPES){
-    if(S.unlocked.includes(r.id))continue;
-    if(JSON.stringify([...r.ings].sort())===JSON.stringify(sorted)){
-      res.innerHTML=`<div class="rm-card" style="background:#888;opacity:.85">${recipeIcon(r.id,26)}<strong>🔒 ${r.name}</strong><span>Нужно разблокировать</span></div>`;
-      exp.style.display='none';return;
-    }
+  const lm=findMatch(RECIPES.filter(r=>!S.unlocked.includes(r.id)&&!r.byStars));
+  if(lm){
+    res.innerHTML=`<div class="rm-card" style="background:var(--caramel)">${recipeIcon(lm.id,26)}<strong>🔒 ${lm.name}</strong><span>новый рецепт!</span></div>`;
+    exp.innerHTML=`✨ Похоже на новый рецепт! Нажмите <b>🧪 Эксперимент</b> (${EXP_COST}₽), чтобы освоить его.`;
+    exp.style.display='block';return;
   }
-  if(sorted.length>=2){res.innerHTML='<span style="color:rgba(28,10,0,.45);font-size:12px">Неизвестная комбинация</span>';exp.style.display='block';}
-  else{res.innerHTML='<span style="opacity:.4">Добавьте ещё...</span>';exp.style.display='none';}
+  const sm=findMatch(RECIPES.filter(r=>!S.unlocked.includes(r.id)&&r.byStars));
+  if(sm){
+    res.innerHTML=`<div class="rm-card" style="background:#888">${recipeIcon(sm.id,26)}<strong>🔒 ${sm.name}</strong><span>нужно ${sm.byStars}★ репутации</span></div>`;
+    return;
+  }
+  if(S.table.length>=2){
+    res.innerHTML='<span style="color:rgba(28,10,0,.45);font-size:12px">Неизвестная комбинация — такого рецепта нет</span>';
+    exp.innerHTML='🧪 Можно поэкспериментировать — вдруг что-то получится?';
+    exp.style.display='block';
+  }
+  else res.innerHTML='<span style="opacity:.4">Добавьте ещё...</span>';
 }
 
 function clearTable(){S.table=[];renderTable();checkMatch();}
 
 function tryExp(){
   if(S.table.length<2){notify('Нужно минимум 2 ингредиента!','b');return;}
+  const lm=findMatch(RECIPES.filter(r=>!S.unlocked.includes(r.id)&&!r.byStars));
+  if(lm){
+    if(S.money<EXP_COST){notify(`Нужно ${EXP_COST}₽ на пробную партию`,'b');return;}
+    S.money-=EXP_COST;S.dayStats.exp++;S.totalStats.exps++;
+    S.unlocked.push(lm.id);
+    fanfare();notify(`🎉 Освоен рецепт: ${lm.name}!`,'g');
+    clearTable();updateHdr();save();return;
+  }
+  // случайная комбинация: небольшой шанс вдохновения
+  const cost=20;
+  if(S.money<cost){notify(`Нужно ${cost}₽ на продукты для пробы`,'b');return;}
   S.dayStats.exp++;S.totalStats.exps++;
-  if(Math.random()>.4){
-    const lu=RECIPES.filter(r=>!S.unlocked.includes(r.id))[0];
-    fanfare();
-    if(lu&&Math.random()>.5){S.unlocked.push(lu.id);notify(`Открыт рецепт: ${lu.name}!`,'g');}
-    else{notify('Эксперимент удался! +50₽','g');S.money+=50;updateHdr();}
-  }else{boop();notify('Эксперимент не удался...','b');}
-  clearTable();save();
+  S.money-=cost;
+  if(Math.random()<.3){
+    const bonus=30+Math.floor(Math.random()*40);
+    S.money+=bonus;fanfare();
+    notify(`Неожиданно вкусно! Продали пробу за +${bonus}₽`,'g');
+  }else{
+    boop();notify(`Не получилось... −${cost}₽ на продукты`,'b');
+  }
+  clearTable();updateHdr();save();
 }
 
 function addToShowcase(){
-  const sorted=[...S.table].sort();
-  if(!sorted.length){notify('Стол пуст!','b');return;}
-  let m=null;
-  for(const r of RECIPES){
-    if(!S.unlocked.includes(r.id))continue;
-    if(JSON.stringify([...r.ings].sort())===JSON.stringify(sorted)){m=r;break;}
-  }
-  if(!m){notify('Рецепт не распознан. Попробуйте эксперимент!','i');return;}
+  if(S.dayOpen||S.dayDone){notify('Готовить можно только утром, до открытия','i');return;}
+  if(!S.table.length){notify('Стол пуст!','b');return;}
+  const m=findMatch(RECIPES.filter(r=>S.unlocked.includes(r.id)));
+  if(!m){notify('Рецепт не распознан','i');return;}
   const total=Object.values(S.showcase).reduce((a,b)=>a+b,0);
   if(total>=20){notify('Витрина полна!','b');return;}
-  const cost=Math.round(m.price*.3);
-  if(S.money<cost){notify('Недостаточно денег!','b');return;}
+  const cost=recipeCost(m);
+  if(S.money<cost){notify(`Нужно ${cost}₽ на ингредиенты!`,'b');return;}
   S.showcase[m.id]=(S.showcase[m.id]||0)+1;
-  S.money-=cost;budgetUsed+=cost;
+  S.money-=cost;budgetUsed+=cost;S.dayStats.spent+=cost;
   clearTable();renderSidebar();updateBudget();updateHdr();ding();
-  notify(`${m.name} → витрина`,'g');
+  notify(`${m.name} → витрина (−${cost}₽)`,'g');
 }
 
 function renderSidebar(){
@@ -662,38 +786,44 @@ function renderSidebar(){
   items.forEach(id=>{
     const r=RECIPES.find(x=>x.id===id);if(!r)return;
     const d=document.createElement('div');d.className='sc-item';
-    d.innerHTML=`${recipeIcon(id,22)}<span class="iname">${r.name}</span><span class="iprice">${r.price}₽</span>
-    <div class="qty"><button class="qb" onclick="chQty('${id}',-1)">−</button><span class="qv">${S.showcase[id]}</span><button class="qb" onclick="chQty('${id}',1)">+</button></div>`;
+    const morning=!S.dayOpen&&!S.dayDone;
+    d.innerHTML=`${recipeIcon(id,22)}<span class="iname">${r.name}</span><span class="iprice">${priceOf(r)}₽</span>
+    ${morning?`<div class="qty"><button class="qb" onclick="chQty('${id}',-1)">−</button><span class="qv">${S.showcase[id]}</span><button class="qb" onclick="chQty('${id}',1)">+</button></div>`:`<span class="qv">×${S.showcase[id]}</span>`}`;
     l.appendChild(d);
   });
   document.getElementById('cap-used').textContent=Object.values(S.showcase).reduce((a,b)=>a+b,0);
 }
 
 function chQty(id,d){
-  const r=RECIPES.find(x=>x.id===id),c=Math.round(r.price*.3),n=(S.showcase[id]||0)+d;
-  if(n<=0){delete S.showcase[id];}
-  else if(n>20){notify('Максимум 20','b');return;}
-  else{
-    if(d>0){if(S.money<c){notify('Недостаточно денег!','b');return;}S.money-=c;budgetUsed+=c;}
-    else{S.money+=c;budgetUsed-=c;}
-    S.showcase[id]=n;
+  if(S.dayOpen||S.dayDone){notify('Витрину можно менять только утром','i');return;}
+  const r=RECIPES.find(x=>x.id===id),c=recipeCost(r),n=(S.showcase[id]||0)+d;
+  if(d>0){
+    const total=Object.values(S.showcase).reduce((a,b)=>a+b,0);
+    if(total>=20){notify('Витрина полна!','b');return;}
+    if(S.money<c){notify(`Нужно ${c}₽!`,'b');return;}
+    S.money-=c;budgetUsed+=c;S.dayStats.spent+=c;S.showcase[id]=n;
+  }else{
+    if(n<=0)delete S.showcase[id];else S.showcase[id]=n;
+    S.money+=c;budgetUsed-=c;S.dayStats.spent-=c; // разобрали блюдо — продукты вернулись
   }
   renderSidebar();updateBudget();updateHdr();
 }
 
 function updateBudget(){
   document.getElementById('bleft').textContent=`${S.money} ₽`;
-  document.getElementById('bfill').style.width=`${Math.min(100,budgetUsed/(500+(S.day-1)*100)*100)}%`;
+  document.getElementById('bspent').textContent=`${Math.max(0,budgetUsed)} ₽`;
 }
 
 function openBakery(){
-  if(!Object.keys(S.showcase).length){notify('Витрина пуста — приготовьте что-нибудь!','b');return;}
-  S.dayStats={earned:0,sold:{},unhappy:0,exp:0,byType:{},wantedMissing:{}};S.dayEarned=0;
+  if(!Object.keys(S.showcase).filter(k=>S.showcase[k]>0).length){notify('Витрина пуста — приготовьте что-нибудь!','b');return;}
+  const spent=S.dayStats.spent||0;
+  S.dayStats={earned:0,spent,sold:{},unhappy:0,exp:S.dayStats.exp||0,fast:0,byType:{},wantedMissing:{}};S.dayEarned=0;
   S.dayOpen=true;S.dayDone=false;S.goalsRewarded=false;
   dayPaused=false;
   document.getElementById('open-btn-wrap').style.display='none';
   document.getElementById('day-card').style.display='block';
   document.getElementById('evening-card').style.display='none';
+  document.getElementById('btn-auto').style.display=S.decor['assistant']?'inline-block':'none';
   updateToolbar();
   initDay();
 }
@@ -706,8 +836,10 @@ function openRB(){
   RECIPES.forEach(r=>{
     const unlk=S.unlocked.includes(r.id);
     const el=document.createElement('div');el.className=`rb-card ${unlk?'unlocked':'locked'}`;
-    const ings=r.ings.map(i=>{const x=INGS.find(g=>g.id===i);return x?x.name:'?';}).join(' + ')||'???';
-    el.innerHTML=`${recipeIcon(r.id,34)}<div class="rc-name">${unlk?r.name:'???'}</div><div class="rc-price">${unlk?r.price+'₽':'🔒'}</div><div class="rc-ings">${unlk?ings:'Неизвестно'}</div>`;
+    const ings=r.ings.map(i=>{const x=INGS.find(g=>g.id===i);return x?x.name:'?';}).join(' + ');
+    let how='';
+    if(!unlk)how=r.byStars?`Нужно ${r.byStars}★ репутации`:'Соберите на столе + 🧪';
+    el.innerHTML=`${recipeIcon(r.id,34)}<div class="rc-name">${r.name}</div><div class="rc-price">${unlk?priceOf(r)+'₽':'🔒'}</div><div class="rc-ings">${unlk||!r.byStars?ings:'???'}</div>${how?`<div class="rc-how">${how}</div>`:''}`;
     const target=r.cat==='bakery'?'rb-bakery':r.cat==='drink'?'rb-drinks':'rb-special';
     document.getElementById(target).appendChild(el);
   });
@@ -722,41 +854,85 @@ function openDecor(){
 }
 function closeDecor(){document.getElementById('decor-overlay').classList.remove('active');}
 
+// ─── INTRO / VICTORY ──────────────────────────────────────
+function openIntro(){document.getElementById('intro-overlay').classList.add('active');}
+function closeIntro(){
+  document.getElementById('intro-overlay').classList.remove('active');
+  if(!S.introSeen){S.introSeen=true;save();}
+}
+function showVictory(){
+  document.getElementById('victory-overlay').classList.add('active');
+  fanfare();setTimeout(fanfare,600);
+}
+function closeVictory(){document.getElementById('victory-overlay').classList.remove('active');}
+
 // ─── DAY PHASE ─────────────────────────────────────────────
 const DAY_DURATION=8*60;
-const MAX_SEATS=6;
 const seatOccupied={};
 let custs=[],queue=[],dayRunning=false,dayTime=0,lastSpawn=0,nextSpawnIn=10;
-let activeCust=null,animId=null;
+let activeCust=null,animId=null,sellPending=false;
+
+function isRush(){const h=8+dayTime/60;return h>=12&&h<13;}
+
+function weatherWeight(rid){
+  const w=S.weather.id,hot=HOT_DRINKS.includes(rid);
+  const r=RECIPES.find(x=>x.id===rid);
+  if(w==='rain')return hot?2.5:(rid==='lemonade'?0.2:1);
+  if(w==='heat')return rid==='lemonade'?4:(hot?0.35:1);
+  if(w==='cloud'||w==='wind')return r&&r.cat==='bakery'?1.5:1;
+  return 1;
+}
+
+function pickWant(prefs){
+  // взвешенный выбор из открытых рецептов: предпочтения типа + погода
+  const pool=S.unlocked.map(id=>{
+    let wgt=1;
+    if(prefs&&prefs.includes(id))wgt*=4;
+    wgt*=weatherWeight(id);
+    return {id,wgt};
+  });
+  const sum=pool.reduce((a,p)=>a+p.wgt,0);
+  let roll=Math.random()*sum;
+  for(const p of pool){roll-=p.wgt;if(roll<=0)return p.id;}
+  return pool[pool.length-1].id;
+}
 
 class Cust{
   constructor(){
-    const w=[3,2,3,2,3,1];let roll=Math.random()*14,acc=0,idx=0;
-    for(let i=0;i<w.length;i++){acc+=w[i];if(roll<acc){idx=i;break;}}
+    let weights=CTYPES.map(t=>{
+      let w={student:3,bizlady:2,tourist:2,hipster:2,granny:3,mom:2}[t.id]||2;
+      if(S.decor['painting']&&(t.id==='hipster'||t.id==='tourist'))w*=1.6;
+      return w;
+    });
+    const sum=weights.reduce((a,b)=>a+b,0);
+    let roll=Math.random()*sum,idx=0;
+    for(let i=0;i<weights.length;i++){roll-=weights[i];if(roll<=0){idx=i;break;}}
     this.type=CTYPES[idx];
-    if(this.type.prefs){
-      const prefs=this.type.prefs.filter(id=>S.unlocked.includes(id));
-      this.want=prefs.length?prefs[Math.floor(Math.random()*prefs.length)]:S.unlocked[Math.floor(Math.random()*S.unlocked.length)];
-    }else{
-      this.want=S.unlocked[Math.floor(Math.random()*S.unlocked.length)];
-    }
+    this.want=pickWant(this.type.prefs);
     this.state='waiting';
-    this.patience=this.type.patience*(S.decor['jazz']?1.3:1);
+    this.patience=this.type.patience*(S.decor['jazz']?1.35:1);
     this.waitTime=0;this.id=Math.random();
     this.seatIdx=-1;this.eatTime=0;this.eatDur=10+Math.random()*10;
   }
   wantName(){const r=RECIPES.find(x=>x.id===this.want);return r?r.name:'что-нибудь';}
 }
 
+function skyColor(){
+  const h=8+dayTime/60; // 8..16
+  if(h<10)return['#ffd9a0','#aee4f5'];
+  if(h<14)return['#aee4f5','#7ec9e8'];
+  return['#f8c471','#e59866'];
+}
+
 function initDay(){
   custs=[];queue=[];dayRunning=true;dayTime=0;lastSpawn=0;
-  nextSpawnIn=5+Math.random()*4;activeCust=null;
+  nextSpawnIn=4+Math.random()*3;activeCust=null;sellPending=false;
   Object.keys(seatOccupied).forEach(k=>delete seatOccupied[k]);
   document.getElementById('day-earned-hdr').textContent='0 ₽';
   document.getElementById('day-log-line').textContent='';
   renderCafeDecorRow();
   updateQueueDisplay();
-  setTimeout(spawnCust,1500);
+  setTimeout(spawnCust,1200);
   if(animId)cancelAnimationFrame(animId);
   let last=null;
   function loop(ts){
@@ -766,18 +942,25 @@ function initDay(){
     if(!dayPaused){
       dayTime+=dt;lastSpawn+=dt;
       const pct=Math.min(1,dayTime/DAY_DURATION);
-      const gMin=Math.floor((dayTime%60)/60*60);
+      const gMin=Math.floor(dayTime%60);
       const gHour=8+Math.floor(dayTime/60);
       document.getElementById('time-lbl').textContent=`${gHour}:${String(gMin).padStart(2,'0')}`;
       document.getElementById('day-timebar').style.width=(pct*100)+'%';
+      const [s1,s2]=skyColor();
+      document.documentElement.style.setProperty('--sky',s1);
+      document.documentElement.style.setProperty('--sky2',s2);
+      document.getElementById('rush-banner').style.display=isRush()?'inline':'none';
       if(dayTime>=DAY_DURATION){notify('Рабочий день окончен!','i');endDay();return;}
-      // Spawn
-      if(lastSpawn>=nextSpawnIn&&custs.filter(c=>c.state==='waiting').length<5){
+      // Spawn: погода, репутация, свет, час пик
+      let interval=nextSpawnIn/S.weather.spawn;
+      interval*=(1.45-S.rep/100*.9);
+      if(S.decor['lighting'])interval*=.85;
+      if(isRush())interval*=.45;
+      if(lastSpawn>=interval&&custs.filter(c=>c.state==='waiting').length<6){
         spawnCust();
-        if(Math.random()<.2)setTimeout(spawnCust,1800);
-        lastSpawn=0;nextSpawnIn=6+Math.random()*6;
+        if(isRush()&&Math.random()<.4)setTimeout(spawnCust,1200);
+        lastSpawn=0;nextSpawnIn=8+Math.random()*7;
       }
-      // Update customers
       custs.forEach(c=>{
         if(c.state==='waiting'){
           c.waitTime+=dt;
@@ -790,10 +973,13 @@ function initDay(){
       });
       custs=custs.filter(c=>c.state!=='gone');
       queue=queue.filter(c=>c.state==='waiting');
-      // Auto-sell
-      if(S.autoSell&&queue.length){
+      // Помощник-бариста
+      if(S.autoSell&&S.decor['assistant']&&queue.length&&!sellPending){
         const f=queue[0];
-        if(f&&f.want&&S.showcase[f.want]>0){activeCust=f;setTimeout(()=>{if(activeCust===f)doSell();},200);}
+        if(f&&f.want&&S.showcase[f.want]>0){
+          activeCust=f;sellPending=true;
+          setTimeout(()=>{sellPending=false;if(dayRunning&&!dayPaused&&activeCust===f&&f.state==='waiting')doSell();},350);
+        }
       }
       if(!activeCust&&queue.length){activeCust=queue[0];updateCustUI();}
       else if(!queue.length&&!activeCust){document.getElementById('cafe-active-cust').textContent='Ждём гостей...';}
@@ -805,13 +991,15 @@ function initDay(){
 }
 
 function spawnCust(){
+  if(!dayRunning)return;
+  if(custs.filter(c=>c.state==='waiting').length>=6)return;
   const c=new Cust();custs.push(c);queue.push(c);
   addLog(`${c.type.emoji} ${c.type.name} → хочет ${c.wantName()}`);
 }
 
 function leaveAngry(c){
   S.rep=Math.max(0,S.rep-2);S.dayStats.unhappy++;
-  addLog(`😤 ${c.type.name} ушёл недовольным!`,'b');
+  addLog(`😤 ${c.type.name} не дождался и ушёл!`,'b');
   queue=queue.filter(x=>x!==c);c.state='gone';
   if(activeCust===c){activeCust=null;if(queue.length){activeCust=queue[0];updateCustUI();}else document.getElementById('cafe-active-cust').textContent='Ждём гостей...';}
   updateQueueDisplay();updateHdr();boop();
@@ -829,7 +1017,7 @@ function updateQueueDisplay(){
   const el=document.getElementById('queue-display');if(!el)return;
   el.innerHTML='';
   document.getElementById('queue-lbl').style.display=queue.length?'inline':'none';
-  queue.slice(0,5).forEach(c=>{
+  queue.slice(0,6).forEach(c=>{
     const pct=Math.max(0,1-c.waitTime/c.patience);
     const div=document.createElement('div');div.className='q-av'+(pct<.3?' angry':'');
     div.title=`${c.type.name}: ${c.wantName()}`;
@@ -844,7 +1032,8 @@ function updateQueueDisplay(){
 function renderSeats(){
   const el=document.getElementById('cafe-seats');if(!el)return;
   el.innerHTML='';
-  for(let i=0;i<MAX_SEATS;i++){
+  const n=seatCount();
+  for(let i=0;i<n;i++){
     const c=custs.find(x=>x.state==='eating'&&x.seatIdx===i);
     const div=document.createElement('div');
     div.className='seat-slot'+(c?' occupied':'');
@@ -861,7 +1050,7 @@ function renderSeats(){
 
 function renderCafeDecorRow(){
   const el=document.getElementById('cafe-deco-icons');if(!el)return;
-  const map={painting:'🖼',plant:'🪴',lighting:'💡',jazz:'🎵',menu_board:'📋',table:'🟫'};
+  const map={painting:'🖼',plant:'🪴',lighting:'💡',jazz:'🎵',menu_board:'📋',assistant:'🤝'};
   el.innerHTML=Object.keys(map).filter(k=>S.decor[k]).map(k=>map[k]).join(' ');
 }
 
@@ -872,6 +1061,7 @@ function addLog(msg,cls=''){
 }
 
 function sellToCust(){
+  if(dayPaused){notify('Игра на паузе','i');return;}
   if(!activeCust||activeCust.state!=='waiting'){notify('Нет клиента у стойки','b');return;}
   doSell();
 }
@@ -885,31 +1075,33 @@ function doSell(){
     rejectCust();return;
   }
   S.showcase[c.want]--;
-  const tip=Math.round(r.price*c.type.tip),earned=r.price+tip;
+  const price=priceOf(r);
+  const fast=c.waitTime<c.patience*.3;
+  let tip=Math.round(price*c.type.tip);
+  if(fast){tip+=Math.round(price*.1);S.dayStats.fast++;}
+  const earned=price+tip;
   S.money+=earned;S.dayEarned+=earned;S.dayStats.earned+=earned;
   S.dayStats.sold[c.want]=(S.dayStats.sold[c.want]||0)+1;
-  if(!S.dayStats.byType)S.dayStats.byType={};
   S.dayStats.byType[c.type.id]=(S.dayStats.byType[c.type.id]||0)+1;
-  S.totalStats.croissants+=(c.want==='croissant'?1:0);
-  S.totalStats.eclairs+=(c.want==='eclair'?1:0);
-  S.totalStats.lattes+=(c.want==='latte'?1:0);
-  // seat customer
-  const si=Array.from({length:MAX_SEATS},(_,i)=>i).find(i=>!seatOccupied[i]);
+  S.totalStats.served++;
+  const n=seatCount();
+  const si=Array.from({length:n},(_,i)=>i).find(i=>!seatOccupied[i]);
   if(si!=null){seatOccupied[si]=true;c.seatIdx=si;c.state='eating';c.eatTime=0;}
   else{c.state='gone';}
   queue=queue.filter(x=>x!==c);activeCust=null;
   document.getElementById('day-earned-hdr').textContent=`${S.dayEarned} ₽`;
-  addLog(`+${earned}₽ — ${r.name}${tip>0?` (+${tip}₽ чаев.)`:''}`, 'g');
+  addLog(`+${earned}₽ — ${r.name}${tip>0?` (+${tip}₽ чаевые${fast?' ⚡':''})`:''}`,'g');
   updateHdr();renderSidebar();ding();
   if(queue.length){activeCust=queue[0];updateCustUI();}
   else document.getElementById('cafe-active-cust').textContent='Ждём гостей...';
-  save();
 }
 
 function rejectCust(){
+  if(dayPaused){notify('Игра на паузе','i');return;}
   if(!activeCust)return;
   const c=activeCust;c.state='gone';
-  S.rep=Math.max(0,S.rep-1);
+  // репутация страдает, только если товар был, а вы отказали
+  if((S.showcase[c.want]||0)>0)S.rep=Math.max(0,S.rep-1);
   queue=queue.filter(x=>x!==c);activeCust=null;
   addLog(`${c.type.emoji} ${c.type.name} ушёл без покупки`);updateHdr();
   if(queue.length){activeCust=queue[0];updateCustUI();}
@@ -917,9 +1109,10 @@ function rejectCust(){
 }
 
 function toggleAuto(){
+  if(!S.decor['assistant']){notify('Сначала наймите помощника (🏠 Кофейня)','i');return;}
   S.autoSell=!S.autoSell;
   const b=document.getElementById('btn-auto');
-  b.textContent=`🤖 Авто: ${S.autoSell?'ВКЛ':'ВЫКЛ'}`;
+  b.textContent=`🤝 Помощник: ${S.autoSell?'ВКЛ':'ВЫКЛ'}`;
   b.style.background=S.autoSell?'var(--caramel)':'';
   b.style.color=S.autoSell?'#fff':'';
 }
@@ -934,18 +1127,29 @@ function togglePause(){
 function endDay(){
   if(!dayRunning)return;
   dayRunning=false;if(animId)cancelAnimationFrame(animId);
-  custs=[];queue=[];Object.keys(seatOccupied).forEach(k=>delete seatOccupied[k]);
+  custs=[];queue=[];activeCust=null;Object.keys(seatOccupied).forEach(k=>delete seatOccupied[k]);
   if(S.dayEarned>S.totalStats.maxDay)S.totalStats.maxDay=S.dayEarned;
   if(S.rep>=80)S.totalStats.repDays++;
-  if(S.day>=3)S.totalStats.day5=true;
-  const sold=Object.values(S.dayStats.sold).reduce((a,b)=>a+b,0);
+  const sold=soldTotal();
   if(sold>10)S.rep=Math.min(100,S.rep+3);
+  if(S.dayStats.unhappy===0&&sold>=5)S.rep=Math.min(100,S.rep+2);
   if(S.dayStats.unhappy>3)S.rep=Math.max(0,S.rep-3);
   if(S.decor['plant'])S.rep=Math.min(100,S.rep+2);
+  // расходы дня
+  let costs=RENT;
+  if(S.decor['assistant'])costs+=ASSISTANT_WAGE;
+  S.money-=costs;S.dayCosts=costs;
+  // цели
+  let bonus=0;
+  goalObjs().forEach(g=>{if(g.check&&g.check())bonus+=g.reward;});
+  if(bonus>0&&!S.goalsRewarded){S.goalsRewarded=true;S.money+=bonus;}
+  S.dayBonus=bonus;
+  // прогноз на завтра
+  S.forecast=WEATHERS[Math.floor(Math.random()*WEATHERS.length)];
   S.dayDone=true;
   dayPaused=false;
   document.getElementById('day-card').style.display='none';
-  updateToolbar();
+  updateToolbar();updateHdr();renderSidebar();updateBudget();
   checkUnlocks();
   renderEveningCard();
   save();
@@ -955,24 +1159,18 @@ function endDay(){
 function renderEveningCard(){
   const card=document.getElementById('evening-card');
   card.style.display='block';
-  const ts=Object.values(S.dayStats.sold).reduce((a,b)=>a+b,0);
-  // Goals
-  let goalsHtml='',bonus=0;
-  if(S.goals&&S.goals.length){
-    S.goals.forEach(g=>{
-      const done=g.check&&g.check();
-      if(done)bonus+=g.reward;
-      goalsHtml+=`<div class="ev-goal${done?' done':''}"><span>${done?'✅':'❌'}</span><span style="flex:1">${g.desc}</span><span>${done?'+'+g.reward+'₽':'—'}</span></div>`;
-    });
-    if(bonus>0&&!S.goalsRewarded){S.goalsRewarded=true;S.money+=bonus;updateHdr();}
-  }
-  // Leftovers
+  const ts=soldTotal();
+  const profit=S.dayStats.earned-(S.dayStats.spent||0)-(S.dayCosts||0)+(S.dayBonus||0);
+  let goalsHtml='';
+  goalObjs().forEach(g=>{
+    const done=g.check&&g.check();
+    goalsHtml+=`<div class="ev-goal${done?' done':''}"><span>${done?'✅':'❌'}</span><span style="flex:1">${g.desc}</span><span>${done?'+'+g.reward+'₽':'—'}</span></div>`;
+  });
   let lftHtml='';
   const lftItems=Object.keys(S.showcase).filter(k=>S.showcase[k]>0);
   if(lftItems.length){
     lftHtml=lftItems.map(id=>{const r=RECIPES.find(x=>x.id===id);return`<span class="ev-lft-tag">${r?r.name:id} ×${S.showcase[id]}</span>`;}).join('');
   }
-  // Sales bars
   const sorted=Object.entries(S.dayStats.sold).sort((a,b)=>b[1]-a[1]);
   const mx=sorted[0]?sorted[0][1]:1;
   const barsHtml=sorted.slice(0,5).map(([id,cnt])=>{
@@ -983,52 +1181,55 @@ function renderEveningCard(){
       <span style="font-size:11px;font-weight:700;color:var(--caramel)">${cnt}</span>
     </div>`;
   }).join('');
+  const fc=S.forecast||WEATHERS[0];
   card.innerHTML=`
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
       <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700">День ${S.day} завершён!</div>
-      <div class="ev-stats" style="margin:0">
+      <div class="ev-stats" style="margin:0;flex:1">
         <div class="ev-stat"><div class="ev-v">${S.dayStats.earned}₽</div><div class="ev-l">Выручка</div></div>
+        <div class="ev-stat"><div class="ev-v ${profit<0?'neg':''}">${profit>=0?'+':''}${profit}₽</div><div class="ev-l">Прибыль</div></div>
         <div class="ev-stat"><div class="ev-v">${ts}</div><div class="ev-l">Продано</div></div>
         <div class="ev-stat"><div class="ev-v">${Math.round(S.rep)}%</div><div class="ev-l">Репутация</div></div>
       </div>
     </div>
+    <div class="ev-costs">
+      <span>🧾 Продукты: <b>−${S.dayStats.spent||0}₽</b></span>
+      <span>🏠 Аренда: <b>−${RENT}₽</b></span>
+      ${S.decor['assistant']?`<span>🤝 Зарплата: <b>−${ASSISTANT_WAGE}₽</b></span>`:''}
+      ${S.dayBonus?`<span style="color:var(--sage)">🎯 Бонус за цели: <b style="color:var(--sage)">+${S.dayBonus}₽</b></span>`:''}
+    </div>
     ${barsHtml?`<div style="margin-bottom:8px">${barsHtml}</div>`:''}
     ${goalsHtml?`<div class="ev-goals">${goalsHtml}</div>`:''}
-    ${bonus>0?`<div class="ev-bonus">🎉 Бонус за цели: +${bonus}₽</div>`:''}
     ${lftHtml?`<div class="ev-leftovers"><span style="font-size:11px;font-weight:600">Остатки:</span>${lftHtml}
-      <button class="btn btn-s" style="font-size:11px;padding:4px 10px" onclick="sellLeftovers()">Продать −50%</button>
+      <button class="btn btn-s" style="font-size:11px;padding:4px 10px" onclick="sellLeftovers()">Распродать по бросовой</button>
       <button class="btn btn-o" style="font-size:11px;padding:4px 10px" onclick="throwLeftovers()">Выбросить</button>
     </div>`:'<div style="font-size:12px;color:var(--sage);font-weight:600;margin-bottom:8px">✨ Всё продано!</div>'}
+    ${S.loan>0?`<div id="loan-box">
+      <div style="flex:1"><div class="lb-title">💳 Кредит: осталось ${S.loan}₽</div><div class="lb-sub">Выплатите кредит, чтобы кофейня стала вашей</div></div>
+      ${[200,500,1000].map(a=>`<button class="btn btn-p" style="font-size:12px;padding:6px 12px" ${S.money<a?'disabled':''} onclick="payLoan(${a})">Внести ${a}₽</button>`).join('')}
+    </div>`:''}
+    <div id="forecast-box">🔮 Прогноз на завтра: ${fc.icon} <b>${fc.name}</b> — ${fc.tip}</div>
     <div id="unlock-area"></div>
   `;
 }
 
+function payLoan(amount){
+  amount=Math.min(amount,S.loan,S.money);
+  if(amount<=0)return;
+  S.money-=amount;S.loan-=amount;
+  ding();updateHdr();save();
+  if(S.loan<=0&&!S.won){S.won=true;save();showVictory();}
+  renderEveningCard();
+}
+
 function checkUnlocks(){
+  const st=stars();
   let unlock=null;
-  if(S.totalStats.croissants>=20&&!S.unlocked.includes('almond_croissant'))
-    unlock={id:'almond_croissant',desc:'Продал 20 круассанов!'};
-  else if(S.dayStats.earned>=1000&&!S.unlocked.includes('honey_cake'))
-    unlock={id:'honey_cake',desc:'1000₽ за день!'};
-  else if(S.totalStats.exps>=1&&!S.unlocked.includes('recipe_of_day'))
-    unlock={id:'recipe_of_day',desc:'Первый удачный эксперимент!'};
-  else if(S.totalStats.day5&&!S.unlocked.includes('matcha_latte'))
-    unlock={id:'matcha_latte',desc:'3 дня в деле!'};
-  else if(S.totalStats.repDays>=3&&!S.unlocked.includes('breakfast'))
-    unlock={id:'breakfast',desc:'Репутация 80%+ три дня!'};
-  else if(S.totalStats.eclairs>=10&&!S.unlocked.includes('chocolate_croissant'))
-    unlock={id:'chocolate_croissant',desc:'Продал 10 эклеров!'};
-  else if(S.day>=5&&!S.unlocked.includes('waffle'))
-    unlock={id:'waffle',desc:'5 дней работы!'};
-  else if(S.totalStats.maxDay>=2000&&!S.unlocked.includes('tart'))
-    unlock={id:'tart',desc:'2000₽ за один день!'};
-  else if(S.totalStats.lattes>=15&&!S.unlocked.includes('honey_latte'))
-    unlock={id:'honey_latte',desc:'Продал 15 латте!'};
-  else if(S.totalStats.maxDay>=3000&&!S.unlocked.includes('hot_chocolate'))
-    unlock={id:'hot_chocolate',desc:'3000₽ за один день!'};
-  else if(S.day>=8&&!S.unlocked.includes('vanilla_latte'))
-    unlock={id:'vanilla_latte',desc:'8-й день работы!'};
-  else if(S.dayStats.earned>=1500&&!S.unlocked.includes('cheesecake'))
-    unlock={id:'cheesecake',desc:'1500₽ за день!'};
+  for(const r of RECIPES){
+    if(r.byStars&&st>=r.byStars&&!S.unlocked.includes(r.id)){
+      unlock={id:r.id,desc:`Репутация ${r.byStars}★!`};break;
+    }
+  }
   if(unlock){
     S.unlocked.push(unlock.id);
     const r=RECIPES.find(x=>x.id===unlock.id);
@@ -1042,25 +1243,39 @@ function checkUnlocks(){
 
 function sellLeftovers(){
   let e=0;
-  Object.keys(S.showcase).forEach(id=>{const r=RECIPES.find(x=>x.id===id),q=S.showcase[id]||0;if(q&&r)e+=Math.round(r.price*.5)*q;});
-  S.money+=e;S.showcase={};notify(`Продано остатков на ${e}₽`,'g');updateHdr();renderEveningCard();
+  // распродажа по бросовой цене — возвращает лишь часть себестоимости
+  Object.keys(S.showcase).forEach(id=>{const r=RECIPES.find(x=>x.id===id),q=S.showcase[id]||0;if(q&&r)e+=Math.round(recipeCost(r)*.6)*q;});
+  S.money+=e;S.showcase={};notify(`Продано остатков на ${e}₽`,'g');updateHdr();renderSidebar();renderEveningCard();
 }
-function throwLeftovers(){S.showcase={};notify('Остатки выброшены','i');renderEveningCard();}
+function throwLeftovers(){S.showcase={};S.rep=Math.max(0,S.rep-1);notify('Остатки выброшены (−1 репутация)','i');updateHdr();renderSidebar();renderEveningCard();}
 
 function nextDay(){
-  S.day++;S.weather=WEATHERS[Math.floor(Math.random()*WEATHERS.length)];
+  // несданные остатки пропадают — как при «Выбросить»
+  if(Object.values(S.showcase).some(q=>q>0)){
+    S.rep=Math.max(0,S.rep-1);
+    notify('Несданные остатки испортились за ночь (−1 репутация)','i');
+  }
+  S.day++;
+  S.weather=S.forecast||WEATHERS[Math.floor(Math.random()*WEATHERS.length)];
+  S.forecast=null;
   S.showcase={};budgetUsed=0;
   S.prevWantedMissing={...(S.dayStats.wantedMissing||{})};
-  S.dayStats={earned:0,sold:{},unhappy:0,exp:0,byType:{},wantedMissing:{}};
-  S.dayEarned=0;S.dayOpen=false;S.dayDone=false;S.goalsRewarded=false;
+  S.dayStats={earned:0,spent:0,sold:{},unhappy:0,exp:0,fast:0,byType:{},wantedMissing:{}};
+  S.dayEarned=0;S.dayOpen=false;S.dayDone=false;S.goalsRewarded=false;S.dayBonus=0;S.dayCosts=0;
   S.goals=[];pickGoals();
   document.getElementById('evening-card').style.display='none';
   document.getElementById('day-card').style.display='none';
   document.getElementById('open-btn-wrap').style.display='block';
+  // защита от банкротства: не на что готовить — родня выручает
+  if(S.money<60){
+    const aid=250;
+    S.money+=aid;
+    if(!S.won){S.loan+=Math.round(aid*1.2);notify(`💸 Совсем нет денег... Родня одолжила ${aid}₽ (кредит +${Math.round(aid*1.2)}₽)`,'b');}
+    else notify(`💝 Постоянные гости скинулись вам на продукты: +${aid}₽`,'g');
+  }
   updateToolbar();updateHdr();save();
   renderWorkbench();
-  S.money+=50;updateHdr();
-  notify(`День ${S.day} начинается! +50₽ на утро`,'g');
+  notify(`🌅 День ${S.day}. ${S.weather.icon} ${S.weather.name}`,'i');
 }
 
 // ─── DECOR ────────────────────────────────────────────────
@@ -1072,7 +1287,7 @@ function renderDecor(){
     const d=document.createElement('div');d.className='di-item';
     d.innerHTML=`<div class="dico">${item.icon}</div>
     <div class="dinfo"><div class="dtitle">${item.name}</div><div class="ddesc">${item.desc}</div></div>
-    ${owned?'<span class="owned-badge">Куплено</span>':`<div style="text-align:right"><div class="dprice">${item.price}₽</div><button class="btn btn-p" style="font-size:11px;padding:4px 9px;margin-top:3px" onclick="buyDecor('${item.id}')">Купить</button></div>`}`;
+    ${owned?'<span class="owned-badge">Куплено</span>':`<div style="text-align:right"><div class="dprice">${item.price}₽</div><button class="btn btn-p" style="font-size:11px;padding:4px 9px;margin-top:3px" ${S.money<item.price?'disabled':''} onclick="buyDecor('${item.id}')">Купить</button></div>`}`;
     l.appendChild(d);
   });
 }
@@ -1100,10 +1315,10 @@ function drawDecorPreview(){
   });
   if(S.decor['painting'])drawPainting(dctx,160,20);
   if(S.decor['plant'])drawPlant(dctx,W-55,H*.55);
-  if(S.decor['menu_board']){dctx.fillStyle='#2c3e50';dctx.fillRect(390,22,100,78);dctx.strokeStyle='#c8873a';dctx.lineWidth=2;dctx.strokeRect(390,22,100,78);}
+  if(S.decor['menu_board'])drawMenuBoard(dctx,380,20);
   if(S.decor['lighting']){
     const lg=dctx.createRadialGradient(W/2,0,5,W/2,0,W*.7);
-    lg.addColorStop(0,'rgba(255,220,100,.2)');lg.addColorStop(1,'rgba(255,220,100,0)');
+    lg.addColorStop(0,'rgba(255,220,100,.25)');lg.addColorStop(1,'rgba(255,220,100,0)');
     dctx.fillStyle=lg;dctx.fillRect(0,0,W,H);
   }
   if(S.decor['jazz']){dctx.font='18px serif';dctx.fillStyle='rgba(142,68,173,.55)';dctx.fillText('♪',W-32,55);dctx.fillText('♫',W-55,40);}
@@ -1116,6 +1331,7 @@ function drawDecorPreview(){
   }
   dctx.fillStyle='#6b3a1a';dctx.fillRect(W-150,H*.58,150,H*.42);
   dctx.fillStyle='#a07040';dctx.fillRect(W-155,H*.55,158,14);
+  if(S.decor['assistant']){dctx.font='26px serif';dctx.fillText('🤝',W-100,H*.8);}
 }
 
 function drawPainting(ctx,x,y){
@@ -1129,16 +1345,17 @@ function drawPainting(ctx,x,y){
 }
 
 function drawMenuBoard(ctx,x,y){
-  ctx.fillStyle='#2c3e50';ctx.fillRect(x,y,120,85);
-  ctx.strokeStyle='#c8873a';ctx.lineWidth=3;ctx.strokeRect(x,y,120,85);
+  ctx.fillStyle='#2c3e50';ctx.fillRect(x,y,110,82);
+  ctx.strokeStyle='#c8873a';ctx.lineWidth=3;ctx.strokeRect(x,y,110,82);
   ctx.fillStyle='#f5e6c8';ctx.font='bold 12px Nunito,sans-serif';ctx.textAlign='center';
-  ctx.fillText('МЕНЮ ДНЯ',x+60,y+20);
+  ctx.fillText('МЕНЮ ДНЯ',x+55,y+20);
   ctx.font='10px Nunito,sans-serif';ctx.fillStyle='rgba(245,230,200,.75)';
-  ['Круассан 80₽','Латте 150₽','Эклер 120₽'].forEach((t,i)=>ctx.fillText(t,x+60,y+36+i*14));
+  ['Круассан','Латте','Эклер'].forEach((t,i)=>ctx.fillText(t,x+55,y+36+i*14));
+  ctx.textAlign='left';
 }
 
 function drawPlant(ctx,x,y){
-  [[0,-18,16],[- 11,-7,12],[11,-10,11]].forEach(([dx,dy,r])=>{
+  [[0,-18,16],[-11,-7,12],[11,-10,11]].forEach(([dx,dy,r])=>{
     ctx.fillStyle='#4a7c59';ctx.beginPath();ctx.arc(x+dx,y+dy,r,Math.PI,0);ctx.fill();
   });
   ctx.fillStyle='#8b5e3c';ctx.fillRect(x-9,y,18,24);
@@ -1150,27 +1367,40 @@ function buyDecor(id){
   if(S.decor[id]){notify('Уже куплено','i');return;}
   if(S.money<item.price){notify(`Нужно ${item.price}₽`,'b');return;}
   S.money-=item.price;S.decor[id]=true;
-  notify(`${item.name} добавлен!`,'g');fanfare();updateHdr();save();
+  notify(`${item.name} — готово!`,'g');fanfare();updateHdr();save();
   renderDecor();
+  if(id==='assistant')document.getElementById('btn-auto').style.display=S.dayOpen?'inline-block':'none';
 }
 
 // ─── INIT ──────────────────────────────────────────────────
 async function init(){
   await load();
+  // миграция старых сохранений
+  if(S.loan===undefined||S.loan===null)S.loan=LOAN_TOTAL;
+  if(S.won===undefined)S.won=false;
+  if(S.introSeen===undefined)S.introSeen=false;
   if(!S.goals)S.goals=[];
+  S.goals=S.goals.map(g=>typeof g==='string'?g:(g&&g.id)?g.id:null).filter(Boolean);
   if(!S.prevWantedMissing)S.prevWantedMissing={};
+  if(!S.dayStats)S.dayStats={};
+  ['earned','spent','unhappy','exp','fast'].forEach(k=>{if(typeof S.dayStats[k]!=='number')S.dayStats[k]=0;});
+  if(!S.dayStats.sold)S.dayStats.sold={};
   if(!S.dayStats.byType)S.dayStats.byType={};
   if(!S.dayStats.wantedMissing)S.dayStats.wantedMissing={};
-  if(!S.totalStats.eclairs)S.totalStats.eclairs=0;
-  if(!S.totalStats.lattes)S.totalStats.lattes=0;
+  if(!S.totalStats)S.totalStats={};
+  ['maxDay','repDays','exps','served'].forEach(k=>{if(typeof S.totalStats[k]!=='number')S.totalStats[k]=0;});
+  if(!S.weather||!S.weather.id)S.weather=WEATHERS[0];
+  else S.weather=WEATHERS.find(w=>w.id===S.weather.id)||WEATHERS[0];
+  if(S.forecast)S.forecast=WEATHERS.find(w=>w.id===S.forecast.id)||null;
   if(S.goals.length===0)pickGoals();
-  // If we were in the middle of a day, reset to morning state
+  // если день прервался — начинаем утро заново
   if(S.dayOpen&&!S.dayDone){
     S.dayOpen=false;
-    S.dayStats={earned:0,sold:{},unhappy:0,exp:0,byType:{},wantedMissing:{}};
+    S.dayStats={earned:0,spent:0,sold:{},unhappy:0,exp:0,fast:0,byType:{},wantedMissing:{}};
   }
   updateHdr();updateToolbar();
   renderWorkbench();
+  if(!S.introSeen)openIntro();
 }
 init();
 </script>
