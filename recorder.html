@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Морковка-диктофон</title>
+<style>
+  :root {
+    --sky1: #bfe3ff;
+    --sky2: #e9d9ff;
+    --blue: #26457a;
+    --blue2: #3a63a8;
+    --carrot: #ff8a1f;
+    --carrot2: #e8650c;
+    --carrot3: #ffb366;
+    --leaf: #4caf50;
+    --leaf2: #2e7d32;
+    --rec: #ff3b4e;
+    --card: rgba(255,255,255,.72);
+    --ink: #1d2b4a;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #fff7 0, transparent 60%),
+      radial-gradient(900px 500px at 110% 110%, #ffd9b366 0, transparent 60%),
+      linear-gradient(160deg, var(--sky1), var(--sky2));
+    background-attachment: fixed;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 24px 16px 40px;
+    overflow-x: hidden;
+  }
+
+  /* мягкие «облака» на фоне */
+  .cloud { position: fixed; border-radius: 999px; background: #ffffffa8; filter: blur(2px); z-index: 0; pointer-events: none; }
+  .cloud.c1 { width: 220px; height: 60px; top: 8%; left: -40px; animation: drift 40s linear infinite; }
+  .cloud.c2 { width: 160px; height: 46px; top: 22%; right: -30px; animation: drift 55s linear infinite reverse; }
+  .cloud.c3 { width: 260px; height: 70px; bottom: 8%; left: 30%; opacity: .6; animation: drift 70s linear infinite; }
+  @keyframes drift { 50% { transform: translateX(60px); } }
+
+  .stage { position: relative; z-index: 1; width: 100%; max-width: 440px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+
+  /* Главная морковка */
+  .carrot-btn {
+    position: relative; border: 0; background: none; padding: 0; cursor: pointer;
+    width: 220px; height: 360px;
+    filter: drop-shadow(0 18px 24px rgba(38,69,122,.28));
+    transition: transform .18s cubic-bezier(.3,1.6,.5,1);
+    touch-action: manipulation;
+  }
+  .carrot-btn:active { transform: scale(.96) rotate(-2deg); }
+  .carrot-btn svg { width: 100%; height: 100%; overflow: visible; }
+  .carrot-btn .leaves { transform-origin: 110px 92px; transition: transform .3s; }
+  .carrot-btn:hover .leaves { transform: rotate(-4deg); }
+  .carrot-btn.rec .leaves { animation: wiggle .5s ease-in-out infinite alternate; }
+  .carrot-btn.playing .leaves { animation: wiggle .35s ease-in-out infinite alternate; }
+  @keyframes wiggle { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+
+  .carrot-btn .badge { transition: fill .25s; }
+  .carrot-btn .icon { transition: opacity .2s, transform .25s; transform-origin: 110px 190px; }
+  .carrot-btn .icon.hide { opacity: 0; transform: scale(.4); }
+
+  .carrot-btn.rec .badge { fill: var(--rec); }
+  .carrot-btn.rec .pulse { animation: pulse 1.2s ease-out infinite; }
+  @keyframes pulse { from { r: 46; opacity: .55; } to { r: 86; opacity: 0; } }
+
+  .timer {
+    font-variant-numeric: tabular-nums; font-weight: 800; font-size: 28px; letter-spacing: 1px;
+    color: var(--blue); min-height: 36px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .timer .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--rec); opacity: 0; }
+  .timer.on .dot { opacity: 1; animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: .15; } }
+
+  /* Визуализатор */
+  .viz { width: 100%; height: 56px; display: block; }
+
+  /* Список */
+  .list-wrap {
+    width: 100%; background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-radius: 28px; padding: 14px; box-shadow: 0 10px 30px rgba(38,69,122,.15), inset 0 0 0 2px #ffffffaa;
+  }
+  .list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; max-height: 40vh; overflow-y: auto; }
+  .list:empty { display: none; }
+  .item {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 18px;
+    background: #fff; box-shadow: 0 2px 0 #26457a14; cursor: pointer;
+    transition: transform .15s, box-shadow .15s, background .15s;
+    animation: pop .35s cubic-bezier(.3,1.6,.5,1);
+  }
+  @keyframes pop { from { transform: scale(.8); opacity: 0; } }
+  .item:hover { transform: translateY(-1px); }
+  .item.active { background: linear-gradient(90deg, #fff1e3, #fff); box-shadow: inset 0 0 0 2px var(--carrot); }
+  .item .mini { width: 26px; height: 40px; flex: none; }
+  .item.playing .mini { animation: wiggle .35s ease-in-out infinite alternate; }
+  .item .bar { flex: 1; height: 8px; border-radius: 8px; background: #e7ecf6; overflow: hidden; }
+  .item .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--carrot3), var(--carrot)); border-radius: 8px; }
+  .item .dur { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--blue2); font-size: 14px; min-width: 40px; text-align: right; }
+  .icon-btn {
+    width: 34px; height: 34px; flex: none; border: 0; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; background: #eef2fa; color: var(--blue);
+    transition: background .15s, transform .15s;
+  }
+  .icon-btn:hover { background: #ffe1e4; color: var(--rec); transform: rotate(8deg); }
+  .icon-btn svg { width: 16px; height: 16px; }
+
+  /* Кнопка «+» */
+  .add {
+    width: 64px; height: 64px; border-radius: 50%; border: 0; cursor: pointer;
+    background: linear-gradient(160deg, var(--blue2), var(--blue));
+    color: #fff; display: grid; place-items: center;
+    box-shadow: 0 10px 20px rgba(38,69,122,.35), inset 0 -4px 0 #0003;
+    transition: transform .18s cubic-bezier(.3,1.6,.5,1), opacity .2s;
+  }
+  .add:hover { transform: scale(1.08) rotate(90deg); }
+  .add:active { transform: scale(.94); }
+  .add:disabled { opacity: .35; pointer-events: none; }
+  .add svg { width: 28px; height: 28px; }
+
+  .row { display: flex; align-items: center; justify-content: center; gap: 16px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  @media (max-height: 700px) { .carrot-btn { width: 170px; height: 280px; } }
+</style>
+</head>
+<body>
+  <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+
+  <main class="stage">
+    <button class="carrot-btn" id="main" aria-label="Запись">
+      <svg viewBox="0 0 220 360" aria-hidden="true">
+        <defs>
+          <linearGradient id="gBody" x1="0" x2="1">
+            <stop offset="0" stop-color="#ffb366"/>
+            <stop offset=".45" stop-color="#ff8a1f"/>
+            <stop offset="1" stop-color="#e8650c"/>
+          </linearGradient>
+          <linearGradient id="gLeaf" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#2e7d32"/>
+            <stop offset="1" stop-color="#7bd36f"/>
+          </linearGradient>
+          <radialGradient id="gBadge" cx=".35" cy=".3" r=".8">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset="1" stop-color="#f3f6ff"/>
+          </radialGradient>
+        </defs>
+
+        <!-- ботва -->
+        <g class="leaves">
+          <path d="M110 96 C 92 60, 70 40, 58 6 C 84 18, 104 46, 112 90 Z" fill="url(#gLeaf)"/>
+          <path d="M110 96 C 112 56, 108 26, 120 0 C 134 30, 126 62, 114 94 Z" fill="url(#gLeaf)"/>
+          <path d="M110 96 C 130 64, 150 46, 170 22 C 166 52, 140 78, 114 96 Z" fill="url(#gLeaf)"/>
+        </g>
+
+        <!-- тело морковки -->
+        <path d="M44 112 Q 40 90 110 88 Q 180 90 176 112 Q 168 220 118 348 Q 110 362 102 348 Q 52 220 44 112 Z" fill="url(#gBody)"/>
+        <!-- блик -->
+        <path d="M62 116 Q 64 104 86 100 Q 74 170 98 300 Q 70 220 62 116 Z" fill="#fff" opacity=".22"/>
+        <!-- бороздки -->
+        <g stroke="#c8530a" stroke-width="4" stroke-linecap="round" opacity=".45" fill="none">
+          <path d="M60 140 q 14 4 26 0"/>
+          <path d="M140 132 q 12 4 24 -2"/>
+          <path d="M150 238 q 8 4 14 -2"/>
+          <path d="M70 252 q 10 4 20 0"/>
+          <path d="M102 300 q 8 3 16 0"/>
+        </g>
+        <!-- решётка микрофона -->
+        <g fill="#c8530a" opacity=".5">
+          <circle cx="98" cy="268" r="3"/><circle cx="110" cy="268" r="3"/><circle cx="122" cy="268" r="3"/>
+          <circle cx="104" cy="280" r="3"/><circle cx="116" cy="280" r="3"/>
+          <circle cx="110" cy="292" r="3"/>
+        </g>
+
+        <!-- круглая кнопка на морковке -->
+        <circle class="pulse" cx="110" cy="190" r="46" fill="none" stroke="#ff3b4e" stroke-width="6" opacity="0"/>
+        <circle cx="110" cy="194" r="48" fill="#00000022"/>
+        <circle class="badge" cx="110" cy="190" r="46" fill="url(#gBadge)" stroke="#26457a" stroke-width="5"/>
+
+        <!-- иконки -->
+        <g class="icon" id="iRec">
+          <circle cx="110" cy="190" r="20" fill="#ff3b4e"/>
+        </g>
+        <g class="icon hide" id="iStop">
+          <rect x="94" y="174" width="32" height="32" rx="6" fill="#fff"/>
+        </g>
+        <g class="icon hide" id="iPlay">
+          <path d="M100 168 L 134 190 L 100 212 Z" fill="#26457a" stroke="#26457a" stroke-width="6" stroke-linejoin="round"/>
+        </g>
+        <g class="icon hide" id="iPause">
+          <rect x="94" y="172" width="11" height="36" rx="3" fill="#26457a"/>
+          <rect x="115" y="172" width="11" height="36" rx="3" fill="#26457a"/>
+        </g>
+      </svg>
+    </button>
+
+    <div class="timer" id="timer"><span class="dot"></span><span id="time">0:00</span></div>
+    <canvas class="viz" id="viz"></canvas>
+
+    <div class="row">
+      <button class="add" id="add" aria-label="Новая запись">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+
+    <div class="list-wrap" id="listWrap" hidden>
+      <ul class="list" id="list"></ul>
+    </div>
+  </main>
+
+<script>
+(() => {
+  // ---------- хранилище (IndexedDB — живёт только в этом браузере) ----------
+  const DB = 'carrot-recorder', STORE = 'recs';
+  const dbp = new Promise((res, rej) => {
+    const r = indexedDB.open(DB, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore(STORE, { keyPath: 'id' });
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+  const tx = async (mode, fn) => {
+    const db = await dbp;
+    return new Promise((res, rej) => {
+      const t = db.transaction(STORE, mode), s = t.objectStore(STORE);
+      const out = fn(s);
+      t.oncomplete = () => res(out && out.result);
+      t.onerror = () => rej(t.error);
+    });
+  };
+  const dbAll = () => tx('readonly', s => s.getAll());
+  const dbPut = rec => tx('readwrite', s => s.put(rec));
+  const dbDel = id => tx('readwrite', s => s.delete(id));
+
+  // ---------- элементы ----------
+  const $ = id => document.getElementById(id);
+  const btn = $('main'), timerEl = $('timer'), timeEl = $('time'),
+        addBtn = $('add'), list = $('list'), listWrap = $('listWrap'), canvas = $('viz');
+  const icons = { rec: $('iRec'), stop: $('iStop'), play: $('iPlay'), pause: $('iPause') };
+
+  let recs = [];          // {id, blob, dur, created}
+  let current = null;     // id выбранной записи
+  let mode = 'idle';      // idle | rec | ready | playing
+  let mediaRec, chunks, stream, t0, tick, audioCtx, analyser, raf;
+  const audio = new Audio();
+  const urls = new Map();
+
+  const fmt = s => { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  const urlOf = r => { if (!urls.has(r.id)) urls.set(r.id, URL.createObjectURL(r.blob)); return urls.get(r.id); };
+
+  function setMode(m) {
+    mode = m;
+    btn.classList.toggle('rec', m === 'rec');
+    btn.classList.toggle('playing', m === 'playing');
+    const show = { idle: 'rec', rec: 'stop', ready: 'play', playing: 'pause' }[m];
+    for (const k in icons) icons[k].classList.toggle('hide', k !== show);
+    timerEl.classList.toggle('on', m === 'rec');
+    addBtn.disabled = m === 'rec';
+    if (m === 'idle') timeEl.textContent = '0:00';
+    if (m === 'ready') { const r = recs.find(x => x.id === current); timeEl.textContent = r ? fmt(r.dur) : '0:00'; }
+    renderList();
+  }
+
+  // ---------- запись ----------
+  async function startRec() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) { shake(); return; }
+    chunks = [];
+    mediaRec = new MediaRecorder(stream);
+    mediaRec.ondataavailable = e => e.data.size && chunks.push(e.data);
+    mediaRec.onstop = async () => {
+      const blob = new Blob(chunks, { type: mediaRec.mimeType || 'audio/webm' });
+      const rec = { id: Date.now().toString(36), blob, dur: (performance.now() - t0) / 1000, created: Date.now() };
+      stream.getTracks().forEach(t => t.stop());
+      stopViz();
+      await dbPut(rec);
+      recs.unshift(rec);
+      current = rec.id;
+      setMode('ready');
+    };
+    mediaRec.start();
+    t0 = performance.now();
+    tick = setInterval(() => timeEl.textContent = fmt((performance.now() - t0) / 1000), 250);
+    startViz(stream);
+    setMode('rec');
+  }
+  function stopRec() { clearInterval(tick); mediaRec && mediaRec.state !== 'inactive' && mediaRec.stop(); }
+
+  // ---------- воспроизведение ----------
+  function play(id) {
+    const r = recs.find(x => x.id === id); if (!r) return;
+    current = id;
+    audio.src = urlOf(r);
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+    setMode('playing');
+  }
+  function stopPlay() { audio.pause(); setMode('ready'); }
+  audio.addEventListener('ended', () => { setBar(current, 0); setMode('ready'); });
+  audio.addEventListener('timeupdate', () => {
+    if (mode !== 'playing') return;
+    const r = recs.find(x => x.id === current);
+    const d = isFinite(audio.duration) ? audio.duration : (r ? r.dur : 1);
+    timeEl.textContent = fmt(audio.currentTime);
+    setBar(current, audio.currentTime / d);
+  });
+  function setBar(id, p) {
+    const li = list.querySelector(`[data-id="${id}"] .bar i`);
+    if (li) li.style.width = Math.min(100, p * 100) + '%';
+  }
+
+  // ---------- главная кнопка ----------
+  btn.addEventListener('click', () => {
+    if (mode === 'idle') startRec();
+    else if (mode === 'rec') stopRec();
+    else if (mode === 'ready') play(current);
+    else if (mode === 'playing') stopPlay();
+  });
+  addBtn.addEventListener('click', () => { audio.pause(); current = null; setMode('idle'); });
+
+  // ---------- список ----------
+  const miniCarrot = `<svg class="mini" viewBox="0 0 26 40"><path d="M13 9 C10 4 8 2 6 0 C10 1 12 4 13 8 C13 4 14 1 16 0 C16 4 15 6 13 9Z" fill="#4caf50"/><path d="M4 12 Q4 8 13 8 Q22 8 22 12 Q20 26 14 39 Q13 40 12 39 Q6 26 4 12Z" fill="#ff8a1f"/><path d="M7 16 q3 1 5 0 M15 22 q2 1 4 -1" stroke="#c8530a" stroke-width="1.5" fill="none" opacity=".6"/></svg>`;
+  const trash = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`;
+
+  function renderList() {
+    listWrap.hidden = recs.length === 0;
+    list.innerHTML = recs.map(r => `
+      <li class="item ${r.id === current ? 'active' : ''} ${r.id === current && mode === 'playing' ? 'playing' : ''}" data-id="${r.id}">
+        ${miniCarrot}
+        <span class="bar"><i></i></span>
+        <span class="dur">${fmt(r.dur)}</span>
+        <button class="icon-btn" data-del="${r.id}" aria-label="Удалить">${trash}</button>
+      </li>`).join('');
+  }
+  list.addEventListener('click', async e => {
+    if (mode === 'rec') return;
+    const del = e.target.closest('[data-del]');
+    if (del) {
+      e.stopPropagation();
+      const id = del.dataset.del;
+      if (id === current) { audio.pause(); current = null; }
+      await dbDel(id);
+      if (urls.has(id)) { URL.revokeObjectURL(urls.get(id)); urls.delete(id); }
+      recs = recs.filter(r => r.id !== id);
+      if (!current && recs[0]) current = recs[0].id;
+      setMode(current ? 'ready' : 'idle');
+      return;
+    }
+    const li = e.target.closest('.item');
+    if (li) play(li.dataset.id);
+  });
+
+  // ---------- визуализатор ----------
+  const ctx2d = canvas.getContext('2d');
+  function sizeCanvas() { const d = devicePixelRatio || 1; canvas.width = canvas.clientWidth * d; canvas.height = canvas.clientHeight * d; }
+  addEventListener('resize', sizeCanvas); sizeCanvas();
+
+  function startViz(s) {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const src = audioCtx.createMediaStreamSource(s);
+    analyser = audioCtx.createAnalyser(); analyser.fftSize = 64;
+    src.connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    const draw = () => {
+      analyser.getByteFrequencyData(data);
+      const W = canvas.width, H = canvas.height, n = 24, gap = W / n;
+      ctx2d.clearRect(0, 0, W, H);
+      for (let i = 0; i < n; i++) {
+        const v = data[(i * 1.2) | 0] / 255, h = Math.max(H * .08, v * H);
+        const x = i * gap + gap * .2, w = gap * .6;
+        ctx2d.fillStyle = `hsl(${24 + v * 10}, 100%, ${62 - v * 10}%)`;
+        ctx2d.beginPath(); ctx2d.roundRect(x, (H - h) / 2, w, h, w / 2); ctx2d.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+  }
+  function stopViz() { cancelAnimationFrame(raf); ctx2d.clearRect(0, 0, canvas.width, canvas.height); }
+
+  function shake() {
+    btn.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-10px) rotate(-3deg)' }, { transform: 'translateX(10px) rotate(3deg)' }, { transform: 'translateX(0)' }], { duration: 350 });
+  }
+
+  // ---------- старт ----------
+  dbAll().then(all => {
+    recs = (all || []).sort((a, b) => b.created - a.created);
+    current = recs[0] ? recs[0].id : null;
+    setMode(current ? 'ready' : 'idle');
+  }).catch(() => setMode('idle'));
+})();
+</script>
+</body>
+</html>
