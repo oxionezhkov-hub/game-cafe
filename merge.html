@@ -1331,7 +1331,7 @@ function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');c
 
 /* ---------------- HINT WIGGLE ---------------- */
 let idleT=0;function idleReset(){idleT=now();}
-setInterval(()=>{if(now()-idleT<7000||mOpen||$('#home').classList.contains('on'))return;idleT=now();
+setInterval(()=>{if(!S||now()-idleT<7000||mOpen||$('#home').classList.contains('on'))return;idleT=now();
   const st=ST(),m={};for(let i=0;i<NCELL;i++){const c=st.board[i];if(!c.it||c.lock||c.it.b||c.it.k==='g'||c.it.k==='a')continue;const k=key(c.it);if(!canMerge(c.it,c.it))continue;(m[k]=m[k]||[]).push(i);}
   const ice=[];st.board.forEach((c,i)=>{if(c.lock==='ice'&&c.it)ice.push([key(c.it),i]);});
   let pair=null;for(const k in m)if(m[k].length>=2){pair=m[k].slice(0,2);break;}
